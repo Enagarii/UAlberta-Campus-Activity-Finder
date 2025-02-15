@@ -34,7 +34,5 @@ map.on('click', function(e) {
     var lat = e.latlng.lat;
     var lon = e.latlng.lng;
     console.log('Mouse coordinates: ' + lat + ', ' + lon);
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-
-    
+    marker.setLatLng([e.latlng.lat, e.latlng.lng]);    
 });
