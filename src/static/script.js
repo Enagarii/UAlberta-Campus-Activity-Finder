@@ -1,5 +1,5 @@
 const body = document.querySelector("body");
-body.setAttribute("style", "margin: 0px; background: rgb(200, 255, 203)")
+body.setAttribute("style", "margin: 0px; background: rgb(255, 255, 255)")
 
 // This dynamically creates a <link> element to load the "Roboto Slab" font.
 const fontLink = document.createElement("link");
