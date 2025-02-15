@@ -13,3 +13,5 @@ banner.setAttribute("style",
     "position: fixed; width: 100%; height: 100px; background-color:rgb(127, 235, 127); box-shadow: 0px 3px 3px rgb(133, 133, 133); color: rgb(255, 255, 255); font-weight: bold; font-size: 48px; font-family: Georgia; display: flex; align-items: center; justify-content: center; margin-top: 0px")
 banner.textContent = "Campus Activity Finder"
 body.appendChild(banner);
+
+// 
