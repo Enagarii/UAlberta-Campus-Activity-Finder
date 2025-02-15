@@ -10,8 +10,12 @@ body.appendChild(sidebar);
 // Title Bar
 const banner = document.createElement("div");
 banner.setAttribute("style", 
-    "position: fixed; width: 100%; height: 100px; background-color:rgb(127, 235, 127); box-shadow: 0px 3px 3px rgb(133, 133, 133); color: rgb(255, 255, 255); font-weight: bold; font-size: 48px; font-family: Georgia; display: flex; align-items: center; justify-content: center; margin-top: 0px")
+    "width: 100%; height: 100px; margin-bottom: 10px; background-color:rgb(127, 235, 127); box-shadow: 0px 3px 3px rgb(133, 133, 133); color: rgb(255, 255, 255); font-weight: bold; font-size: 48px; font-family: Georgia; display: flex; align-items: center; justify-content: center; margin-top: 0px")
 banner.textContent = "Campus Activity Finder"
 body.appendChild(banner);
 
-// 
+// Make the map
+const mapdiv = document.createElement("div");
+mapdiv.setAttribute("id", "map");
+mapdiv.setAttribute("style", "height: 700px; width: 80%; float: right; margin-right: 1%");
+body.appendChild(mapdiv);
