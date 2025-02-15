@@ -3,14 +3,17 @@ from flask import Flask, render_template, jsonify, request, Response
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template("index.html")
 
+
+"""
 @app.route('/api/data', methods=['GET'])
 def get_data():
     data = {"message": "Hello from Flask!"}
     return jsonify(data)
+"""
 
 """
 @app.route('/api/data', methods=['POST'])
