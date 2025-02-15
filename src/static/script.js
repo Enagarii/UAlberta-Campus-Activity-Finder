@@ -107,15 +107,16 @@ navWrapper.addEventListener("click", function() {
   }
 });
 
-// ------------------------------
-// 6. "Create Event" Button in Sidebar
+/// ------------------------------
+// 5. "Create Event" Button in Sidebar (at the top, rounded, same text style)
 // ------------------------------
 const createEventButton = document.createElement("button");
 createEventButton.textContent = "Create Event";
 createEventButton.setAttribute(
   "style",
-  "background: none; border: none; outline: none; color: black; width: 90%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(242, 205, 0); cursor: pointer;"
+  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39, 93, 56); border: 0px solid rgb(242,205,0); border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
 );
+
 sidebar.appendChild(createEventButton);
 
 // ------------------------------
@@ -133,7 +134,7 @@ currentTab.textContent = "Current Events";
 currentTab.id = "currentTab";
 currentTab.setAttribute(
   "style",
-  "background: none; color: black; width: 100%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(242, 205, 0); cursor: pointer;"
+  "background: none; color: black; width: 100%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
 );
 
 // Upcoming Events Tab
@@ -142,7 +143,7 @@ upcomingTab.textContent = "Upcoming Events";
 upcomingTab.id = "upcomingTab";
 upcomingTab.setAttribute(
   "style",
-  "background: none; color: black; width: 100%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(242, 205, 0); cursor: pointer;"
+  "background: none; color: black; width: 100%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
 );
 
 // Add the tabs to the container, then container to the sidebar
