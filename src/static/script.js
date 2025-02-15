@@ -7,6 +7,37 @@ fontLink.href = "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&d
 fontLink.rel = "stylesheet";
 document.head.appendChild(fontLink);
 
+// Make the map
+const mapdiv = document.createElement("div");
+mapdiv.setAttribute("id", "map");
+mapdiv.setAttribute("style", "height: 700px; width: 80%; float: right; margin-right: 1%, margin-left: 1%");
+
+// 2. Create a Toggle Button (top-left) to show/hide the sidebar
+// ------------------------------
+const toggleSidebarButton = document.createElement("button");
+toggleSidebarButton.textContent = "Toggle Sidebar";
+toggleSidebarButton.setAttribute(
+  "style",
+  // Position the button fixed at top-left, with a high z-index so it stays above everything
+  "position: fixed; top: 10px; left: 10px; z-index: 9999; padding: 8px 12px; border: none; border-radius: 5px; background-color: #4CAF50; color: white; cursor: pointer;"
+);
+// Keep track of whether the sidebar is currently visible
+let sidebarVisible = true;
+toggleSidebarButton.addEventListener("click", function () {
+  // If sidebar is visible, hide it. If hidden, show it again.
+  if (sidebarVisible) {
+    sidebar.style.display = "none";
+    sidebarVisible = false;
+
+  } else {
+    sidebar.style.display = "flex";
+    sidebarVisible = true;
+  }
+});
+// Append the toggle button to the body
+body.appendChild(toggleSidebarButton);
+
+
 // Left bar to show the contents of the activities
 const sidebar = document.createElement("div");
 sidebar.setAttribute("style", 
@@ -48,8 +79,5 @@ banner.setAttribute("style",
 banner.textContent = "Campus Activity Finder"
 body.appendChild(banner);
 
-// Make the map
-const mapdiv = document.createElement("div");
-mapdiv.setAttribute("id", "map");
-mapdiv.setAttribute("style", "height: 700px; width: 80%; float: right; margin-right: 1%");
+// Draw the map div
 body.appendChild(mapdiv);
