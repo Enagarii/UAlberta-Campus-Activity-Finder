@@ -20,11 +20,13 @@ tabContainer.setAttribute("style", "width: 90%; display: flex; flex-direction: c
 // Current Events Tab
 const currentTab = document.createElement("div");
 currentTab.textContent = "Current Events";
+currentTab.id = "currentTab"
 currentTab.setAttribute("style", "width: 100%; padding: 10px; text-align: center; cursor: pointer; background-color: rgb(100, 200, 100); margin-bottom: 5px; border-radius: 5px");
 
 // Upcoming Events Tab
 const upcomingTab = document.createElement("div");
 upcomingTab.textContent = "Upcoming Events";
+upcomingTab.id = "upcomingTab"
 upcomingTab.setAttribute("style", "width: 100%; padding: 10px; text-align: center; cursor: pointer; background-color: rgb(100, 200, 100); border-radius: 5px");
 
 tabContainer.appendChild(currentTab);
@@ -44,3 +46,10 @@ const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
 mapdiv.setAttribute("style", "height: 700px; width: 80%; float: right; margin-right: 1%");
 body.appendChild(mapdiv);
+
+// Add an onclick event for a div
+upcomingTab.addEventListener('click', function()
+{
+    console.log("Upcoming clicked")
+})
+
