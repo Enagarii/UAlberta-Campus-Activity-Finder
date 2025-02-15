@@ -1,4 +1,5 @@
-from flask import Flask, render_template, jsonify, request, Response
+from flask import Flask, render_template, jsonify, request
+import add_event
 
 app = Flask(__name__)
 
@@ -21,10 +22,8 @@ def receive_data():
 
     response = {"reply": message}
     
-    """
-    course_list = userInput(message)
-    print(course_list)
-    """
+    print(message)
+    add_event.dumpEventToJSON(message, 'static/JSON/events.json')
     
     return jsonify(response)
 
