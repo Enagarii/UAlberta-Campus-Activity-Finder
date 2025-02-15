@@ -10,12 +10,19 @@ document.head.appendChild(fontLink);
 // Left bar to show the contents of the activities
 const sidebar = document.createElement("div");
 sidebar.setAttribute("style", 
-    "position: fixed; width: 18%; height: 100%; background-color:rgb(127, 235, 127); color: rgb(255, 255, 255); display: flex; align-items: center; justify-content: left; margin-top: 0px");
+    "position: fixed; width: 18%; height: 100%; background-color:rgb(127, 235, 127); color: rgb(255, 255, 255); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 0px");
 body.appendChild(sidebar);
+
+// Create Event Button
+const createEventButton = document.createElement("button");
+createEventButton.textContent = "Create Event";
+createEventButton.setAttribute(
+    "style", "width: 90%; padding: 10px; margin: 10px; background-color: rgb(100, 200, 100); border: none; border-radius: 5px; cursor: pointer");
 
 // Vertical Tab container
 const tabContainer = document.createElement("div");
 tabContainer.setAttribute("style", "width: 90%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px");
+sidebar.appendChild(createEventButton);
 
 // Current Events Tab
 const currentTab = document.createElement("div");
