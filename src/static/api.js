@@ -1,13 +1,14 @@
 
-function sendData(test) {
-    console.log(test);
+function sendData(pinData) 
+{
+    console.log(JSON.stringify({pinData}));
 
     fetch('/api/data', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ message: test })  // Send the message as JSON
+        body: JSON.stringify({ message: pinData })  // Send the message as JSON
     })
     .then(response => response.json())
     .then(data => {
