@@ -15,3 +15,21 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 // map.on('drag', function () {
 //     map.panInsideBounds(bounds, { animate: false });
 // });
+
+let marker = L.marker([53.528185474855846, -113.53000320615703]).addTo(map);
+let marker_arr = [marker];
+
+// Listen for the mousemove event
+map.on('mousemove', function(e) {
+    // e.latlng contains the latitude and longitude of the mouse position
+    var lat = e.latlng.lat;
+    var lon = e.latlng.lng;
+    //console.log('Mouse coordinates: ' + lat + ', ' + lon);
+});
+
+// Make the marker
+map.on('click', function(e) {
+    // make a marker
+    console.log("CLICK!");
+    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+});
