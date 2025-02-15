@@ -26,6 +26,8 @@ def receive_data():
     print(course_list)
     """
     
+    print(message)
+    
     return jsonify(response)
 
 

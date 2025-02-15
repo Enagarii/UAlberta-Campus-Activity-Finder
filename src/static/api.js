@@ -16,3 +16,8 @@ function sendData(pinData)
     })
     .catch(error => console.error('Error:', error));
 }
+
+function getData()
+{
+    
+}
