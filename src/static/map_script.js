@@ -31,5 +31,6 @@ map.on('mousemove', function(e) {
 map.on('click', function(e) {
     // make a marker
     console.log("CLICK!");
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+    //L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+    marker.setLatLng([e.latlng.lat, e.latlng.lng]);
 });
