@@ -1,66 +1,3 @@
-/*
-document.addEventListener("DOMContentLoaded", function () {
-    var map = L.map('map').setView([51.505, -0.09], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    var marker = L.marker([51.505, -0.09]).addTo(map)
-        .bindPopup('Default Location')
-        .openPopup();
-
-    window.searchLocation = function() {
-        var location = document.getElementById("locationInput").value;
-        if (location) {
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        var lat = data[0].lat;
-                        var lon = data[0].lon;
-                        map.setView([lat, lon], 13);
-                        marker.setLatLng([lat, lon]).bindPopup(location).openPopup();
-                    } else {
-                        alert("Location not found.");
-                    }
-                })
-                .catch(err => console.error(err));
-        }
-    }
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    var map = L.map('map').setView([51.505, -0.09], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    var marker = L.marker([51.505, -0.09]).addTo(map)
-        .bindPopup('Default Location')
-        .openPopup();
-
-    window.searchLocation = function() {
-        var location = document.getElementById("locationInput").value;
-        if (location) {
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        var lat = data[0].lat;
-                        var lon = data[0].lon;
-                        map.setView([lat, lon], 13);
-                        marker.setLatLng([lat, lon]).bindPopup(location).openPopup();
-                    } else {
-                        alert("Location not found.");
-                    }
-                })
-                .catch(err => console.error(err));
-        }
-    }
-});
-*/
-
 const body = document.querySelector("body");
 body.setAttribute("style", "margin: 0px; background: rgb(200, 255, 203)")
 
@@ -69,6 +6,25 @@ const sidebar = document.createElement("div");
 sidebar.setAttribute("style", 
     "position: fixed; width: 18%; height: 100%; background-color:rgb(127, 235, 127); color: rgb(255, 255, 255); display: flex; align-items: center; justify-content: left; margin-top: 0px");
 body.appendChild(sidebar);
+
+// Vertical Tab container
+const tabContainer = document.createElement("div");
+tabContainer.setAttribute("style", "width: 90%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px");
+
+// Current Events Tab
+const currentTab = document.createElement("div");
+currentTab.textContent = "Current Events";
+currentTab.setAttribute("style", "width: 100%; padding: 10px; text-align: center; cursor: pointer; background-color: rgb(100, 200, 100); margin-bottom: 5px; border-radius: 5px");
+
+// Upcoming Events Tab
+const upcomingTab = document.createElement("div");
+upcomingTab.textContent = "Upcoming Events";
+upcomingTab.setAttribute("style", "width: 100%; padding: 10px; text-align: center; cursor: pointer; background-color: rgb(100, 200, 100); border-radius: 5px");
+
+tabContainer.appendChild(currentTab);
+tabContainer.appendChild(upcomingTab);
+
+sidebar.appendChild(tabContainer);
 
 // Title Bar
 const banner = document.createElement("div");
