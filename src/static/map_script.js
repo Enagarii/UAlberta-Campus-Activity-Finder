@@ -31,15 +31,8 @@ map.on('mousemove', function(e) {
 map.on('click', function(e) {
     // make a marker
     console.log("CLICK!");
-<<<<<<< HEAD
-    //L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-    marker.setLatLng([e.latlng.lat, e.latlng.lng]);
-=======
     var lat = e.latlng.lat;
     var lon = e.latlng.lng;
     console.log('Mouse coordinates: ' + lat + ', ' + lon);
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-
-    
->>>>>>> 0b5519482e02d4c282e463e5efc194408b0553a7
+    marker.setLatLng([e.latlng.lat, e.latlng.lng]);    
 });
