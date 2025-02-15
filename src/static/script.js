@@ -53,10 +53,3 @@ const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
 mapdiv.setAttribute("style", "height: 700px; width: 80%; float: right; margin-right: 1%");
 body.appendChild(mapdiv);
-
-// Add an onclick event for a div
-upcomingTab.addEventListener('click', function()
-{
-    console.log("Upcoming clicked")
-})
-
