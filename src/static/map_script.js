@@ -1,7 +1,8 @@
-var map = L.map('map').setView([51.505, -0.09], 13);
+var map = L.map('map').setView([53.5245, -113.525], 16);
 
-L.tileLayer('../../Pictures/uofa_map.png', {
-    maxZoom: 19
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 25,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
 // var map = L.map('map').setView([53.5232, -113.5263], 13); 
