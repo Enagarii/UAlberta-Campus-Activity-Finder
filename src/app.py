@@ -25,6 +25,8 @@ def receive_data():
     print(message)
     add_event.dumpEventToJSON(message, 'static/JSON/events.json')
     
+    print(message)
+    
     return jsonify(response)
 
 
