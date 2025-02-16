@@ -1,12 +1,5 @@
 import json
 
-class pin:
-    def __init__(self, lat, lon):
-        self.lat = lat
-        self.lon = lon
-        
-    
-
 def dumpEventToJSON(event, json_file):
     # First Get the list of events
     read_file = open(json_file, 'r')

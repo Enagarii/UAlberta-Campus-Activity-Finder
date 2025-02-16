@@ -29,7 +29,7 @@ def receive_data():
     return jsonify(response)
 
 @app.route('/api/desc', methods=['POST'])
-def describtion_data():
+def description_data():
     data = request.get_json()
     message = data.get("message", "")
     

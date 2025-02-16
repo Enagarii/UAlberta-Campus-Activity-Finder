@@ -1,14 +1,15 @@
 // Initialize the Map
+
 const bounds = L.latLngBounds(
-    L.latLng(53.52107395114981, -113.53921677883585),   //SW
-    L.latLng(53.530181589312924, -113.51938779321799)    //NE
+    L.latLng(53.50507395114981, -113.55021677883585),   //SW
+    L.latLng(53.537181589312924, -113.50538779321799)    //NE
 );
 
 var map = L.map('map', {
     zoomControl: false,
     maxBounds: bounds,          // Restrict panning to bounds
     maxBoundsViscosity: 1.0,    // Prevents moving outside of the bounds
-    minZoom: 16
+    minZoom: 15
 }).setView([53.5245, -113.525], 16);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
@@ -16,7 +17,7 @@ var lat = null
 var lon = null
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 25,
+    maxZoom: 20,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
