@@ -36,7 +36,9 @@ document.addEventListener("click", function (e) {
     for (let i = 0; i < marker_arr.length; ++i) {
         // Change the Event on the left of the screen
         if (marker_arr[i].marker.isPopupOpen()) {
-            json_event = { event: true, title: marker_arr[i].title, location: "DICE 8th Floor" };
+            json_event = Object.assign({}, marker_arr[i]);
+            json_event["marker"] = undefined;
+            json_event["event"] = true;
         }
     }
 
@@ -123,11 +125,22 @@ function refreshPage()
         for (var i = 0; i < data.length; ++i) {
             console.log(lat, lon);
 
-            let i_marker = L.marker([data[i].lat, data[i].lon]).addTo(map).bindPopup('Marker: ' + i);
-            marker_arr.push({
-                "marker": i_marker,
-                "title": "Marker " + i
-            });
+            let i_marker = {"marker": L.marker([data[i].lat, data[i].lon]).addTo(map).bindPopup('Marker: ' + i)};
+
+            // Check the contents
+            if (data[i].title == undefined) i_marker["title"] = "NA";
+            else i_marker["title"] = data[i].title;
+
+            if (data[i].location == undefined) i_marker["location"] = "NA";
+            else i_marker["location"] = data[i].location;
+
+            if (data[i].time == undefined) i_marker["time"] = "NA";
+            else i_marker["time"] = data[i].time;
+
+            if (data[i].description == undefined) i_marker["description"] = undefined;
+            else i_marker["description"] = data[i].description;
+
+            marker_arr.push(i_marker);
         }
     })
     .catch(error => console.error('Error loading markers:', error));
