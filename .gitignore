@@ -1,3 +1,5 @@
 *.json
 src/static/JSON/events.json
 src/static/JSON/edescription.json
+*.pyc
+src\__pycache__\add_event.cpython-311.pyc
