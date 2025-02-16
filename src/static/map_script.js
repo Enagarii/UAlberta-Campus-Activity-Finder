@@ -35,12 +35,20 @@ createEventButton.addEventListener("click", createEvent);
 function createEvent()
 {  
     // Log the lat and lon and event clicked
-    console.log("Create event clicked")
+    console.log("Create event clicked");
     console.log('Mouse coordinates: ' + lat + ', ' + lon);
 
     // Check if the lat and lon are null (default)
     if (lat != null && lon != null)
     {
-        sendData({"lat": lat, "lon": lon})
+        sendData({"lat": lat, "lon": lon});
     }
+}
+
+window.addEventListener("load", refreshPage);
+
+function refreshPage()
+{
+    console.log("Refreshed.");
+    getData();
 }

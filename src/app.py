@@ -11,8 +11,9 @@ def index():
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    data = {"message": "Hello from Flask!"}
-    return jsonify(data)
+    message = add_event.getPins()
+    response = {"reply": message}
+    return jsonify(response)
 
 
 @app.route('/api/data', methods=['POST'])
@@ -22,10 +23,7 @@ def receive_data():
 
     response = {"reply": message}
     
-    print(message)
     add_event.dumpEventToJSON(message, 'static/JSON/events.json')
-    
-    print(message)
     
     return jsonify(response)
 

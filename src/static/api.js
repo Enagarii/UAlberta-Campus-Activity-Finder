@@ -19,5 +19,15 @@ function sendData(pinData)
 
 function getData()
 {
-    
+    fetch('/api/data', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.reply)
+    })
+    .catch(error => console.error('Error:', error));
 }
