@@ -1,5 +1,14 @@
+// Initialize the Map
+const bounds = L.latLngBounds(
+    L.latLng(53.52107395114981, -113.53921677883585),   //SW
+    L.latLng(53.530181589312924, -113.51938779321799)    //NE
+);
+
 var map = L.map('map', {
-    zoomControl: false
+    zoomControl: false,
+    maxBounds: bounds,          // Restrict panning to bounds
+    maxBoundsViscosity: 1.0,    // Prevents moving outside of the bounds
+    minZoom: 16
 }).setView([53.5245, -113.525], 16);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
@@ -11,16 +20,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// var map = L.map('map').setView([53.5232, -113.5263], 13); 
-
-// var bounds = [
-//     [53.3, -113.8], // Southwest corner
-//     [53.7, -113.2]  // Northeast corner
-// ];
-// map.setMaxBounds(bounds);
-// map.on('drag', function () {
-//     map.panInsideBounds(bounds, { animate: false });
-// });
 
 let marker_arr = [];
 marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
