@@ -244,7 +244,7 @@ eventLocationInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 
 eventLocationDiv.appendChild(eventLocationInput);
 registerContent.appendChild(eventLocationDiv);
 
-// Event Date/Time Input as datetime-local
+// Event Date/Time Input
 const eventDateTimeInput = document.createElement("input");
 eventDateTimeInput.type = "datetime-local";
 eventDateTimeInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
@@ -279,33 +279,19 @@ function toggleRegisterBar() {
 registerHeader.addEventListener("click", function() {toggleRegisterBar();});
 
 function updateEventContents() {
-  // Handle the error exceptions
   for (let i = 0; i < registerContent.children.length; ++i) {
-    let ichild = registerContent.children[i];
-    if (ichild.tagName.toLowerCase() != "div") continue;
-    console.log("i-" + i + ": " + ichild.classList);
-    if (ichild.classList.contains("error")) {
-      let has_error_message = false;
-      for (let j = 0; j < ichild.children.length; ++j) {
-        has_error_message |= ichild.children[j].classList.contains("err_message");
-      }
-      if (has_error_message) continue;
-
+    if (registerContent.children[i].tagName.toLowerCase() != "div") continue;
+    console.log("i-" + i + ": " + registerContent.children[i].classList);
+    if (registerContent.children[i].classList.contains("error")) {
       const errorCode = document.createElement("p");
       errorCode.setAttribute(
         "style",
-        "color: rgb(255, 0, 0); margin: 0px 0px; font-size: 13px; text-align: right; padding-right: 20px;"
+        "color: rgb(255, 0, 0); margin: 0px 0px; font-size: 14px; text-align: right; padding-right: 20px;"
       );
-      errorCode.setAttribute("class", "err_message");
       errorCode.innerHTML = "Invalid Input / Required Field";
-      ichild.appendChild(errorCode);
-    } else {
-      // Remove every child that has the class Err_message
-      for (let j = ichild.children.length - 1; j >= 0; --j) {
-        if (ichild.children[j].classList.contains("err_message")) {
-          ichild.children[j].remove();
-        }
-      }
+      console.log(errorCode);
+      registerContent.children[i].appendChild(errorCode);
+      console.log(registerContent.children[i]);
     }
   }
 }
