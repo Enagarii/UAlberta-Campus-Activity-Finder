@@ -19,8 +19,8 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 //     map.panInsideBounds(bounds, { animate: false });
 // });
 
-let marker = L.marker([53.528185474855846, -113.53000320615703]).addTo(map);
-let marker_arr = [marker];
+let marker_arr = [];
+marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
 
 // Make the marker
 map.on('click', function(e) {
@@ -51,4 +51,18 @@ function refreshPage()
 {
     console.log("Refreshed.");
     getData();
+
+    // Fetch the markers from the json file
+    fetch('static/JSON/events.json')
+    .then(response => response.json())
+    .then(data => {
+        console.log("REFRESH FETCH !!");
+        console.log(data);
+        marker_arr = [];
+        console.log("LENGTH: " + data.length);
+        for (var i = 0; i < data.length; i++) {
+            marker_arr.push(L.marker([data[i].lat, data[i].lon]).addTo(map));
+        }
+    })
+    .catch(error => console.error('Error loading markers:', error));
 }
