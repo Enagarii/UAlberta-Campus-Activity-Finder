@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 import add_event
+import json
 
 app = Flask(__name__)
 
@@ -24,6 +25,21 @@ def receive_data():
     response = {"reply": message}
     
     add_event.dumpEventToJSON(message, 'static/JSON/events.json')
+    
+    return jsonify(response)
+
+@app.route('/api/desc', methods=['POST'])
+def describtion_data():
+    data = request.get_json()
+    message = data.get("message", "")
+    
+    response = {"reply": message}
+    
+    print("EDESCRIPTION DUMP")
+    # Dump into the json file
+    write_file = open("static/JSON/edescription.json", 'w')
+    write_file.write(json.dumps(message))
+    write_file.close()
     
     return jsonify(response)
 

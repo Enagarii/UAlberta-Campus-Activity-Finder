@@ -27,7 +27,32 @@ map.on('click', function(e) {
     // make a marker
     lat = e.latlng.lat;
     lon = e.latlng.lng;
-    marker.setLatLng([e.latlng.lat, e.latlng.lng]);    
+    marker.setLatLng([e.latlng.lat, e.latlng.lng]);
+});
+
+document.addEventListener("click", function (e) {
+    // See if any popups are open
+    let json_event = { event: false };
+    for (let i = 0; i < marker_arr.length; ++i) {
+        // Change the Event on the left of the screen
+        if (marker_arr[i].marker.isPopupOpen()) {
+            json_event = { event: true, title: marker_arr[i].title };
+        }
+    }
+
+    fetch('/api/desc', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: json_event })  // Send the message as JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.reply);
+        updateEvent();
+    })
+    .catch(error => console.error('Error:', error));
 });
 
 createEventButton.addEventListener("click", createEvent);
@@ -60,8 +85,14 @@ function refreshPage()
         console.log(data);
         marker_arr = [];
         console.log("LENGTH: " + data.length);
-        for (var i = 0; i < data.length; i++) {
-            marker_arr.push(L.marker([data[i].lat, data[i].lon]).addTo(map));
+        for (var i = 0; i < data.length; ++i) {
+            console.log(lat, lon);
+
+            let i_marker = L.marker([data[i].lat, data[i].lon]).addTo(map).bindPopup('Marker: ' + i);
+            marker_arr.push({
+                "marker": i_marker,
+                "title": "Marker " + i
+            });
         }
     })
     .catch(error => console.error('Error loading markers:', error));

@@ -116,6 +116,35 @@ topContainer.appendChild(currentTab);
 topContainer.appendChild(upcomingTab);
 
 // ------------------------------
+// 6.5. Selected Event to look at
+// ------------------------------
+const currentEvent = document.createElement("div");
+currentEvent.setAttribute(
+  "style",
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
+)
+currentEvent.innerHTML = "";
+topContainer.appendChild(currentEvent);
+
+// Update the current event based on user clicked
+function updateEvent() {
+  // Fetch the event description :D
+  fetch('static/JSON/edescription.json')
+  .then(response => response.json())
+  .then(data => {
+      if (!data.event) {
+        currentEvent.innerHTML = "";
+        return;
+      }
+      console.log("UPDATE EVENT");
+      console.log(data);
+
+      currentEvent.innerHTML = data.title;
+  })
+  .catch(error => console.error('Error finding event description:', error));
+}
+
+// ------------------------------
 // 7. Registration Subtab (Collapsible) - Placed at the bottom
 // ------------------------------
 const registerContainer = document.createElement("div");
