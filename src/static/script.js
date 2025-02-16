@@ -91,29 +91,65 @@ navWrapper.addEventListener("click", function() {
 });
 
 // ------------------------------
-// 6. Top Container: Vertical Tab Container (Current / Upcoming)
+// 6. Top Container: Vertical Tab Container (Collapsible Sections)
 // ------------------------------
 const topContainer = document.createElement("div");
 topContainer.setAttribute("style", "width: 100%;");
 
+// -- Current Events Header and Content --
 const currentTab = document.createElement("div");
-currentTab.textContent = "Current Events";
+currentTab.innerHTML = "Current Events <span class='arrow'>▼</span>";
 currentTab.id = "currentTab";
 currentTab.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 0; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
+);
+const currentContent = document.createElement("div");
+currentContent.setAttribute(
+  "style",
+  "width: 93%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; margin-bottom: 10px;"
 );
 
+// -- Upcoming Events Header and Content --
 const upcomingTab = document.createElement("div");
-upcomingTab.textContent = "Upcoming Events";
+upcomingTab.innerHTML = "Upcoming Events <span class='arrow'>▼</span>";
 upcomingTab.id = "upcomingTab";
 upcomingTab.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 0; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
+);
+const upcomingContent = document.createElement("div");
+upcomingContent.setAttribute(
+  "style",
+  "width: 93%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; margin-bottom: 10px;"
 );
 
 topContainer.appendChild(currentTab);
+topContainer.appendChild(currentContent);
 topContainer.appendChild(upcomingTab);
+topContainer.appendChild(upcomingContent);
+
+// Toggle functions for collapsible sections
+currentTab.addEventListener("click", function() {
+  if (currentContent.style.maxHeight === "0px" || currentContent.style.maxHeight === "") {
+    currentContent.style.maxHeight = "300px"; // Expand; adjust as needed
+    currentTab.querySelector(".arrow").textContent = "▲";
+  } else {
+    currentContent.style.maxHeight = "0px"; // Collapse
+    currentTab.querySelector(".arrow").textContent = "▼";
+  }
+});
+
+upcomingTab.addEventListener("click", function() {
+  if (upcomingContent.style.maxHeight === "0px" || upcomingContent.style.maxHeight === "") {
+    upcomingContent.style.maxHeight = "300px"; // Expand; adjust as needed
+    upcomingTab.querySelector(".arrow").textContent = "▲";
+  } else {
+    upcomingContent.style.maxHeight = "0px"; // Collapse
+    upcomingTab.querySelector(".arrow").textContent = "▼";
+  }
+});
+
 
 // ------------------------------
 // 6.5. Selected Event to look at
