@@ -121,9 +121,38 @@ topContainer.appendChild(upcomingTab);
 const currentEvent = document.createElement("div");
 currentEvent.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
-)
-currentEvent.innerHTML = "";
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); display: none;"
+);
+
+const currentEventTitle = document.createElement("h1");
+currentEventTitle.setAttribute(
+  "style",
+  ""
+);
+
+const currentEventLocation = document.createElement("h2");
+currentEventTitle.setAttribute(
+  "style",
+  ""
+);
+
+const currentEventTime = document.createElement("h2");
+currentEventTitle.setAttribute(
+  "style",
+  ""
+);
+
+const currentEventDescription = document.createElement("p");
+currentEventTitle.setAttribute(
+  "style",
+  ""
+);
+
+currentEvent.appendChild(currentEventTitle);
+currentEvent.appendChild(currentEventTime);
+currentEvent.appendChild(currentEventLocation);
+currentEvent.appendChild(currentEventDescription);
+
 topContainer.appendChild(currentEvent);
 
 // Update the current event based on user clicked
@@ -133,13 +162,27 @@ function updateEvent() {
   .then(response => response.json())
   .then(data => {
       if (!data.event) {
-        currentEvent.innerHTML = "";
+        currentEvent.style.display = "none";
         return;
       }
-      console.log("UPDATE EVENT");
+
+      console.log("UPDATE CURRENT EVENT");
       console.log(data);
 
-      currentEvent.innerHTML = data.title;
+      currentEvent.style.display = "block";
+
+      // Check the contents of the object
+      if (data.title == undefined) currentEventTitle.innerHTML = "NA";
+      else currentEventTitle.innerHTML = data.title;
+
+      if (data.time == undefined) currentEventTime.innerHTML = "Time: NA";
+      else currentEventTime.innerHTML = "Time: " + data.time;
+
+      if (data.location == undefined) currentEventLocation.innerHTML = "Location: NA";
+      else currentEventLocation.innerHTML = "Location: " + data.location;
+
+      if (data.description == undefined) currentEventDescription.innerHTML = "";
+      else currentEventDescription.innerHTML = "Description - " + data.description;
   })
   .catch(error => console.error('Error finding event description:', error));
 }

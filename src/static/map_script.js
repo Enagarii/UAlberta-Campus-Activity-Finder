@@ -36,10 +36,11 @@ document.addEventListener("click", function (e) {
     for (let i = 0; i < marker_arr.length; ++i) {
         // Change the Event on the left of the screen
         if (marker_arr[i].marker.isPopupOpen()) {
-            json_event = { event: true, title: marker_arr[i].title };
+            json_event = { event: true, title: marker_arr[i].title, location: "DICE 8th Floor" };
         }
     }
 
+    // Send the current clicked marker to Flask to parse into json
     fetch('/api/desc', {
         method: 'POST',
         headers: {
@@ -49,7 +50,7 @@ document.addEventListener("click", function (e) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data.reply);
+        // Wait till after updating the json to update the current event container
         updateEvent();
     })
     .catch(error => console.error('Error:', error));

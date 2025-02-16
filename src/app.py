@@ -35,7 +35,7 @@ def describtion_data():
     
     response = {"reply": message}
     
-    print("EDESCRIPTION DUMP")
+    ## print("EDESCRIPTION DUMP")
     # Dump into the json file
     write_file = open("static/JSON/edescription.json", 'w')
     write_file.write(json.dumps(message))
