@@ -69,7 +69,7 @@ body.appendChild(navWrapper);
 const sidebar = document.createElement("div");
 sidebar.setAttribute(
   "style",
-  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255,255,255); color: black; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px;"
+  "position: fixed; top: 0; left: 0; width: 25%; height: 100%; background-color: rgb(255,255,255); color: black; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px;"
 );
 body.appendChild(sidebar);
 
@@ -349,7 +349,7 @@ sidebar.appendChild(registerContainer);
 const banner = document.createElement("div");
 banner.setAttribute(
   "style",
-  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px;"
+  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px; text-align: left; padding-left: 10%"
 );
 banner.textContent = "Campus Activity Finder";
 body.appendChild(banner);
