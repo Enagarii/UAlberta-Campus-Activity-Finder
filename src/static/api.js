@@ -1,3 +1,6 @@
+/*
+    Base functionality for creating marker data
+*/
 
 function sendData(pinData) 
 {

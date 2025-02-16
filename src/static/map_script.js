@@ -56,18 +56,44 @@ document.addEventListener("click", function (e) {
     .catch(error => console.error('Error:', error));
 });
 
+// Create Event Button -> first check if all the data is filled out
 createEventButton.addEventListener("click", createEvent);
-
 function createEvent()
 {  
+    // Check the data in create event
+    let valid_input = true;
+
+    for (let i = 0; i < registerContent.children.length; ++i) {
+        // Make sure it is a required div
+        let reqdiv = registerContent.children[i];
+        if (reqdiv.tagName.toLowerCase() != "div" || !reqdiv.classList.contains("required")) continue;
+
+        // Check the inputs of that div
+        let filled = true;
+        for (let j = 0; j < reqdiv.children.length; ++j) {
+            if (reqdiv.children[j].value == "") {
+                valid_input = false;
+                eventTitleDiv.classList.add("error");
+            }
+        }
+    }
+
+    updateEventContents();
+
+    if (lat == null || lon == null) valid_input = false;
+    if (!valid_input) return;
+
     // Log the lat and lon and event clicked
     console.log("Create event clicked");
     console.log('Mouse coordinates: ' + lat + ', ' + lon);
 
+    let new_event = {"lat": lat, "lon": lon};
+    new_event["title"] = eventTitleInput.value;
+
     // Check if the lat and lon are null (default)
     if (lat != null && lon != null)
     {
-        sendData({"lat": lat, "lon": lon});
+        sendData(new_event);
     }
 }
 

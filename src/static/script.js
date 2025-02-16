@@ -124,6 +124,8 @@ currentEvent.setAttribute(
   "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); display: none;"
 );
 
+
+// !!!!!!!!! TODO: Make this look better :D
 const currentEventTitle = document.createElement("h1");
 currentEventTitle.setAttribute(
   "style",
@@ -204,23 +206,27 @@ registerHeader.setAttribute("style",
 const registerContent = document.createElement("div");
 registerContent.setAttribute("style", "width: 100%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; flex-direction: column; align-items: center; margin-top: 10px;");
 
-// Username Input
-const UsernameInput = document.createElement("input");
-UsernameInput.placeholder = "Username";
-UsernameInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-registerContent.appendChild(UsernameInput);
+// // Username Input
+// const UsernameInput = document.createElement("input");
+// UsernameInput.placeholder = "Username";
+// UsernameInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+// registerContent.appendChild(UsernameInput);
 
-// Password Input
-const PasswordInput = document.createElement("input");
-PasswordInput.placeholder = "Password";
-PasswordInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-registerContent.appendChild(PasswordInput);
+// // Password Input
+// const PasswordInput = document.createElement("input");
+// PasswordInput.placeholder = "Password";
+// PasswordInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+// registerContent.appendChild(PasswordInput);
 
 // Event Title Input
+const eventTitleDiv = document.createElement("div");
+eventTitleDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
 const eventTitleInput = document.createElement("input");
 eventTitleInput.placeholder = "Event Title";
-eventTitleInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-registerContent.appendChild(eventTitleInput);
+eventTitleInput.setAttribute("style", "width: 90%; margin: 0px; padding: 8px; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+// Adjust the children
+eventTitleDiv.appendChild(eventTitleInput);
+registerContent.appendChild(eventTitleDiv);
 
 // Event Location Input
 const eventLocationInput = document.createElement("input");
@@ -250,7 +256,7 @@ createEventButton.setAttribute(
 registerContent.appendChild(createEventButton);
 
 // Toggle the registration subtab when the header is clicked with animation
-registerHeader.addEventListener("click", function() {
+function toggleRegisterBar() {
   if (registerContent.style.maxHeight === "0px" || registerContent.style.maxHeight === "") {
     registerContent.style.maxHeight = "500px"; // Expand (adjust as needed)
     registerHeader.querySelector(".arrow").textContent = "▲";
@@ -258,7 +264,27 @@ registerHeader.addEventListener("click", function() {
     registerContent.style.maxHeight = "0px"; // Collapse
     registerHeader.querySelector(".arrow").textContent = "▼";
   }
-});
+}
+
+registerHeader.addEventListener("click", function() {toggleRegisterBar();});
+
+function updateEventContents() {
+  for (let i = 0; i < registerContent.children.length; ++i) {
+    if (registerContent.children[i].tagName.toLowerCase() != "div") continue;
+    console.log("i-" + i + ": " + registerContent.children[i].classList);
+    if (registerContent.children[i].classList.contains("error")) {
+      const errorCode = document.createElement("p");
+      errorCode.setAttribute(
+        "style",
+        "color: rgb(255, 0, 0); margin: 0px 0px; font-size: 14px; text-align: right; padding-right: 20px;"
+      );
+      errorCode.innerHTML = "Invalid Input / Required Field";
+      console.log(errorCode);
+      registerContent.children[i].appendChild(errorCode);
+      console.log(registerContent.children[i]);
+    }
+  }
+}
 
 // Append header and registration content to the registration container
 registerContainer.appendChild(registerHeader);
