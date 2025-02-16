@@ -301,6 +301,56 @@ createEventButton.setAttribute(
 );
 registerContent.appendChild(createEventButton);
 
+// ------------------------------
+// 7.1. Create Event Functionality
+// ------------------------------
+createEventButton.addEventListener("click", function() {
+  // Get values from input fields
+  const title = eventTitleInput.value;
+  const location = eventLocationInput.value;
+  const datetimeValue = eventDateTimeInput.value;
+  const description = eventDescriptionInput.value;
+
+  // Validate required fields
+  if (!title || !location || !datetimeValue) {
+    alert("Please fill in all required fields: Title, Location, and Date/Time.");
+    return;
+  }
+
+  // Create event object
+  const eventObj = {
+    title: title,
+    location: location,
+    time: datetimeValue,
+    description: description
+  };
+
+  // Create a new event element to display in the event list
+  const newEventElement = document.createElement("div");
+  newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
+  newEventElement.innerHTML = eventObj.title + " - " + new Date(eventObj.time).toLocaleString();
+
+  // On click, update the selected event details in the current event display area
+  newEventElement.addEventListener("click", function() {
+    currentEvent.style.display = "block";
+    currentEventTitle.innerHTML = eventObj.title;
+    currentEventTime.innerHTML = "Time: " + new Date(eventObj.time).toLocaleString();
+    currentEventLocation.innerHTML = "Location: " + eventObj.location;
+    currentEventDescription.innerHTML = eventObj.description ? "Description - " + eventObj.description : "";
+  });
+
+  // Classify event based on its date/time compared to the current time
+  const now = new Date();
+  const eventTime = new Date(datetimeValue);
+  if (eventTime <= now) {
+    // Append to Current Events if the event time is in the past or now
+    currentContent.appendChild(newEventElement);
+  } else {
+    // Append to Upcoming Events if the event time is in the future
+    upcomingContent.appendChild(newEventElement);
+  }
+});
+
 // Toggle the registration subtab when the header is clicked with animation
 function toggleRegisterBar() {
   if (registerContent.style.maxHeight === "0px" || registerContent.style.maxHeight === "") {
