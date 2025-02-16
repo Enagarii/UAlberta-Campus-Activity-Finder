@@ -221,6 +221,9 @@ registerContent.setAttribute("style", "width: 100%; max-height: 0; overflow: hid
 // Event Title Input
 const eventTitleDiv = document.createElement("div");
 eventTitleDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
+eventTitleDiv.setAttribute("class", "required event_input");
+eventTitleDiv.setAttribute("id", "title");
+
 const eventTitleInput = document.createElement("input");
 eventTitleInput.placeholder = "Event Title";
 eventTitleInput.setAttribute("style", "width: 90%; margin: 0px; padding: 8px; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
@@ -229,10 +232,17 @@ eventTitleDiv.appendChild(eventTitleInput);
 registerContent.appendChild(eventTitleDiv);
 
 // Event Location Input
+const eventLocationDiv = document.createElement("div");
+eventLocationDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
+eventLocationDiv.setAttribute("class", "required event_input");
+eventLocationDiv.setAttribute("id", "location");
+
 const eventLocationInput = document.createElement("input");
 eventLocationInput.placeholder = "Location";
 eventLocationInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-registerContent.appendChild(eventLocationInput);
+// Adjust the children
+eventLocationDiv.appendChild(eventLocationInput);
+registerContent.appendChild(eventLocationDiv);
 
 // Event Date/Time Input
 const eventDateTimeInput = document.createElement("input");
