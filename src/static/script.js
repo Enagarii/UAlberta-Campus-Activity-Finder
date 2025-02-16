@@ -35,15 +35,9 @@ styleBlock.innerHTML = `
   }
 
   /* Initial widths for the three lines */
-  .one {
-    width: 25px;
-  }
-  .two {
-    width: 25px;
-  }
-  .three {
-    width: 30px;
-  }
+  .one { width: 25px; }
+  .two { width: 25px; }
+  .three { width: 30px; }
 
   /* On hover, each line extends to 35px */
   .nav:hover .one,
@@ -118,7 +112,7 @@ currentTab.textContent = "Current Events";
 currentTab.id = "currentTab";
 currentTab.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 10px; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
 );
 
 // Upcoming Events Tab
@@ -134,69 +128,85 @@ topContainer.appendChild(currentTab);
 topContainer.appendChild(upcomingTab);
 
 // ------------------------------
-// 7. Bottom Container: Event Input Form and Create Event Button
+// 7. Registration Subtab (Collapsible)
 // ------------------------------
-const bottomContainer = document.createElement("div");
-bottomContainer.setAttribute("style", "width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 20px; margin-bottom: 20px;");
+const registerContainer = document.createElement("div");
+registerContainer.setAttribute("style", "width: 100%; margin-top: 20px; margin-bottom: 20px;");
 
-// Event Input Form (text boxes)
-const eventForm = document.createElement("div");
-eventForm.setAttribute("style", "width: 90%; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;");
+// Header for the registration subtab
+const registerHeader = document.createElement("div");
+registerHeader.textContent = "Register your event";
+registerHeader.setAttribute("style",
+  "width: 90%; padding: 10px; margin: 10px 0; text-align: center; background-color: rgb(39,93,56); border: none; border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
+);
+
+// Container for the registration form (initially hidden)
+const registerContent = document.createElement("div");
+registerContent.setAttribute("style", "width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 10px;");
 
 // Username Input
 const UsernameInput = document.createElement("input");
 UsernameInput.placeholder = "Username";
-UsernameInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-eventForm.appendChild(UsernameInput);
+UsernameInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+registerContent.appendChild(UsernameInput);
 
 // Password Input
 const PasswordInput = document.createElement("input");
 PasswordInput.placeholder = "Password";
-PasswordInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-eventForm.appendChild(PasswordInput);
-
+PasswordInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+registerContent.appendChild(PasswordInput);
 
 // Event Title Input
 const eventTitleInput = document.createElement("input");
 eventTitleInput.placeholder = "Event Title";
-eventTitleInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-eventForm.appendChild(eventTitleInput);
+eventTitleInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+registerContent.appendChild(eventTitleInput);
 
 // Event Location Input
 const eventLocationInput = document.createElement("input");
-eventLocationInput.placeholder = "Event Location";
-eventLocationInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-eventForm.appendChild(eventLocationInput);
+eventLocationInput.placeholder = "Location";
+eventLocationInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+registerContent.appendChild(eventLocationInput);
 
 // Event Date/Time Input
 const eventDateTimeInput = document.createElement("input");
-eventDateTimeInput.placeholder = "Event Date/Time";
-eventDateTimeInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-eventForm.appendChild(eventDateTimeInput);
+eventDateTimeInput.placeholder = "Date/Time";
+eventDateTimeInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+registerContent.appendChild(eventDateTimeInput);
 
 // Event Description Input (Textarea)
 const eventDescriptionInput = document.createElement("textarea");
-eventDescriptionInput.placeholder = "Event Description";
-eventDescriptionInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; resize: vertical; box-sizing: border-box;");
-eventForm.appendChild(eventDescriptionInput);
+eventDescriptionInput.placeholder = "Description";
+eventDescriptionInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; resize: vertical; box-sizing: border-box;");
+registerContent.appendChild(eventDescriptionInput);
 
 // Create Event Button
 const createEventButton = document.createElement("button");
 createEventButton.textContent = "Create Event";
 createEventButton.setAttribute(
   "style",
-  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39, 93, 56); border: 0px solid rgb(242,205,0); border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
+  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39,93,56); border: none; border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
 );
+registerContent.appendChild(createEventButton);
 
-// Append the event form and button to the bottom container
-bottomContainer.appendChild(eventForm);
-bottomContainer.appendChild(createEventButton);
+// Toggle the subtab when the header is clicked
+registerHeader.addEventListener("click", function() {
+  if (registerContent.style.display === "none") {
+    registerContent.style.display = "flex";
+  } else {
+    registerContent.style.display = "none";
+  }
+});
+
+// Append header and content to the registration container
+registerContainer.appendChild(registerHeader);
+registerContainer.appendChild(registerContent);
 
 // ------------------------------
-// 8. Append Top and Bottom Containers to the Sidebar
+// 8. Append Top and Registration Containers to the Sidebar
 // ------------------------------
 sidebar.appendChild(topContainer);
-sidebar.appendChild(bottomContainer);
+sidebar.appendChild(registerContainer);
 
 // ------------------------------
 // 9. Title Bar (Banner)
@@ -204,7 +214,7 @@ sidebar.appendChild(bottomContainer);
 const banner = document.createElement("div");
 banner.setAttribute(
   "style",
-  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39, 93, 56); box-shadow: 0px 3px 3px rgb(133, 133, 133); color: rgb(242, 205, 0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px;"
+  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px;"
 );
 banner.textContent = "Campus Activity Finder";
 body.appendChild(banner);
