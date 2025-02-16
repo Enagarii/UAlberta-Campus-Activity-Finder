@@ -118,33 +118,6 @@ function createEvent()
     refreshPage();
     toggleRegisterBar();
     cleanEventRegister();
-
-    // Append to current or upcoming
-    // Create a new event element to display in the event list
-    const newEventElement = document.createElement("div");
-    newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
-    newEventElement.innerHTML = new_event.title + " - " +
-    new Date(new_event.start).toLocaleString() + " to " + new Date(new_event.end).toLocaleString();
-
-    // On click, update the selected event details in the current event display area
-    newEventElement.addEventListener("click", function() {
-    currentEvent.style.display = "block";
-    currentEventTitle.innerHTML = new_event.title;
-    currentEventTime.innerHTML = "Time: " +
-    new Date(new_event.start_time).toLocaleString() + " - " + new Date(new_event.end_time).toLocaleString();
-    currentEventLocation.innerHTML = "Location: " + new_event.location;
-    currentEventDescription.innerHTML = new_event.description ? "Description - " + new_event.description : "";
-    });
-
-    let now = new Date();
-    // Classify event based on its date/time interval:
-    // - Current Events: if now is between the start and end times.
-    // - Upcoming Events: if the event hasn't started yet.
-    if (now >= new_event.start_time && now <= new_event.end_time) {
-        currentContent.appendChild(newEventElement);
-    } else if (now < new_event.start_time) {
-        upcomingContent.appendChild(newEventElement);
-    }
 }
 
 window.addEventListener("load", refreshPage);
@@ -166,13 +139,42 @@ function refreshPage()
             marker_arr[i].marker.remove();
         }
 
-        marker_arr = [];
-        console.log("LENGTH: " + data.length);
-        for (var i = 0; i < data.length; ++i) {
-            console.log(lat, lon);
+        // Sort the array based on time
+        let time_arr = [];
+        for (let i = 0; i < data.length; ++i) {
+            time_arr.push([new Date(data[i].start_time), new Date(data[i].end_time), i]);
+        }
+        time_arr.sort();
 
-            let i_marker = Object.assign({}, data[i]);
-            i_marker["marker"] = L.marker([data[i].lat, data[i].lon]).addTo(map).bindPopup(data[i].title == undefined ? "Activity :D" : data[i].title);
+        new_obj = [];
+        let now = new Date();
+        for (let i = 0; i < time_arr.length; ++i) {
+            if (time_arr[i][1] < now) continue;
+            new_obj.push(data[time_arr[i][2]]);
+
+            let new_event = data[time_arr[i][2]];
+            // Make the Current and Upcoming Events
+            const newEventElement = document.createElement("div");
+            newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
+            newEventElement.innerHTML = new_event.title + " & " + new_event.location + "\nTime: " + new_event.start_time + "-" + new_event.end_time;
+
+            console.log(newEventElement);
+
+            // Classify event based on its date/time interval
+            if (now >= time_arr[i][0] && now <= time_arr[i][2]) {
+                console.log("Append to Current Content");
+                currentContent.appendChild(newEventElement);
+            } else if (now < time_arr[i][0]) {
+                console.log("Append to Upcoming Content");
+                upcomingContent.appendChild(newEventElement);
+            }
+        }
+
+        marker_arr = [];
+        console.log("LENGTH: " + new_obj.length);
+        for (var i = 0; i < new_obj.length; ++i) {
+            let i_marker = Object.assign({}, new_obj[i]);
+            i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
             marker_arr.push(i_marker);
         }
     })
