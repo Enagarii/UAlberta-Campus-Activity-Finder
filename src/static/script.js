@@ -157,7 +157,7 @@ upcomingTab.addEventListener("click", function() {
 const currentEvent = document.createElement("div");
 currentEvent.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); display: none;"
+  "background: white; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; font-size: 10px;  border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none;"
 );
 
 
