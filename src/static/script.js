@@ -25,7 +25,6 @@ styleBlock.innerHTML = `
     display: flex;
     flex-direction: column;
   }
-
   /* Each horizontal line */
   .one, .two, .three {
     height: 4px;
@@ -33,12 +32,10 @@ styleBlock.innerHTML = `
     margin: 5px 0;
     transition: width 0.3s;
   }
-
   /* Initial widths for the three lines */
   .one { width: 25px; }
   .two { width: 25px; }
   .three { width: 30px; }
-
   /* On hover, each line extends to 35px */
   .nav:hover .one,
   .nav:hover .two,
@@ -52,9 +49,8 @@ document.head.appendChild(styleBlock);
 // 3. Create the 3-Line Hamburger Menu
 // ------------------------------
 const navWrapper = document.createElement("div");
-navWrapper.classList.add("nav"); // We'll call this .nav for the CSS above
+navWrapper.classList.add("nav");
 
-// The three horizontal lines
 const lineOne = document.createElement("div");
 lineOne.classList.add("one");
 const lineTwo = document.createElement("div");
@@ -62,12 +58,9 @@ lineTwo.classList.add("two");
 const lineThree = document.createElement("div");
 lineThree.classList.add("three");
 
-// Append lines to the nav container
 navWrapper.appendChild(lineOne);
 navWrapper.appendChild(lineTwo);
 navWrapper.appendChild(lineThree);
-
-// Add the 3-line menu to the body
 body.appendChild(navWrapper);
 
 // ------------------------------
@@ -76,28 +69,25 @@ body.appendChild(navWrapper);
 const sidebar = document.createElement("div");
 sidebar.setAttribute(
   "style",
-  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px;"
+  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255,255,255); color: black; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px;"
 );
 body.appendChild(sidebar);
 
-// Track whether the sidebar is visible
 let sidebarVisible = true;
 
 // ------------------------------
-// 5. Toggle Sidebar & Box Shadow (Map container remains constant)
+// 5. Toggle Sidebar
 // ------------------------------
 navWrapper.addEventListener("click", function() {
-    if (sidebarVisible) {
-      // Slide out (hide sidebar) and remove shadow
-      sidebar.style.transform = "translateX(-100%)";
-      sidebar.style.boxShadow = "none";
-      sidebarVisible = false;
-    } else {
-      // Slide back in (show sidebar) and add shadow on the right
-      sidebar.style.transform = "translateX(0)";
-      sidebar.style.boxShadow = "2px 0 10px rgba(0,0,0,0.3)";
-      sidebarVisible = true;
-    }
+  if (sidebarVisible) {
+    sidebar.style.transform = "translateX(-100%)";
+    sidebar.style.boxShadow = "none";
+    sidebarVisible = false;
+  } else {
+    sidebar.style.transform = "translateX(0)";
+    sidebar.style.boxShadow = "2px 0 10px rgba(0,0,0,0.3)";
+    sidebarVisible = true;
+  }
 });
 
 // ------------------------------
@@ -106,41 +96,39 @@ navWrapper.addEventListener("click", function() {
 const topContainer = document.createElement("div");
 topContainer.setAttribute("style", "width: 100%;");
 
-// Current Events Tab
 const currentTab = document.createElement("div");
 currentTab.textContent = "Current Events";
 currentTab.id = "currentTab";
 currentTab.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 10px; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
 );
 
-// Upcoming Events Tab
 const upcomingTab = document.createElement("div");
 upcomingTab.textContent = "Upcoming Events";
 upcomingTab.id = "upcomingTab";
 upcomingTab.setAttribute(
   "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
 );
 
 topContainer.appendChild(currentTab);
 topContainer.appendChild(upcomingTab);
 
 // ------------------------------
-// 7. Registration Subtab (Collapsible)
+// 7. Registration Subtab (Collapsible) - Placed at the bottom
 // ------------------------------
 const registerContainer = document.createElement("div");
-registerContainer.setAttribute("style", "width: 100%; margin-top: 20px; margin-bottom: 20px;");
+registerContainer.setAttribute("style", "width: 100%; margin-bottom: 20px;");
 
-// Header for the registration subtab
+// Registration Header (with arrow, always transparent with bottom border)
 const registerHeader = document.createElement("div");
-registerHeader.textContent = "Register your event";
+registerHeader.innerHTML = "Register your event <span class='arrow'>▼</span>";
 registerHeader.setAttribute("style",
-  "width: 90%; padding: 10px; margin: 10px 0; text-align: center; background-color: rgb(39,93,56); border: none; border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
+  "width: 93%; padding: 10px; margin: 10px 0; text-align: center; background: transparent; border-bottom: 2px solid rgb(39,93,56); cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: black;"
 );
 
-// Container for the registration form (initially hidden)
+// Registration Content (the form) - initially hidden
 const registerContent = document.createElement("div");
 registerContent.setAttribute("style", "width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 10px;");
 
@@ -180,30 +168,34 @@ eventDescriptionInput.placeholder = "Description";
 eventDescriptionInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; resize: vertical; box-sizing: border-box;");
 registerContent.appendChild(eventDescriptionInput);
 
-// Create Event Button
+// Create Event Button (with green background)
 const createEventButton = document.createElement("button");
 createEventButton.textContent = "Create Event";
 createEventButton.setAttribute(
   "style",
-  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39,93,56); border: none; border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
+  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39,93,56); border: none; border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: white;"
 );
 registerContent.appendChild(createEventButton);
 
-// Toggle the subtab when the header is clicked
+// Toggle the registration subtab when the header is clicked
 registerHeader.addEventListener("click", function() {
   if (registerContent.style.display === "none") {
     registerContent.style.display = "flex";
+    // Change arrow to up
+    registerHeader.querySelector(".arrow").textContent = "▲";
   } else {
     registerContent.style.display = "none";
+    // Change arrow to down
+    registerHeader.querySelector(".arrow").textContent = "▼";
   }
 });
 
-// Append header and content to the registration container
+// Append header and registration content to the registration container
 registerContainer.appendChild(registerHeader);
 registerContainer.appendChild(registerContent);
 
 // ------------------------------
-// 8. Append Top and Registration Containers to the Sidebar
+// 8. Append Top Container (tabs) and Registration Subtab to the Sidebar
 // ------------------------------
 sidebar.appendChild(topContainer);
 sidebar.appendChild(registerContainer);
