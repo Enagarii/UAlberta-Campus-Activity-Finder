@@ -98,13 +98,22 @@ function createEvent()
     console.log('Mouse coordinates: ' + lat + ', ' + lon);
 
     let new_event = {"lat": lat, "lon": lon};
-    new_event["title"] = eventTitleInput.value;
+    for (let i = 0; i < registerContent.children.length; ++i) {
+        let propdiv = registerContent.children[i];
+        if (propdiv.tagName.toLowerCase() != "div" || !propdiv.classList.contains("event_input")) continue;
+        new_event[propdiv.id] = "";
+        for (let j = 0; j < propdiv.children.length; ++j) {
+            if (propdiv.children[j].value != undefined) new_event[propdiv.id] += propdiv.children[j].value;
+        }
+    }
 
     // Check if the lat and lon are null (default)
     if (lat != null && lon != null)
     {
         sendData(new_event);
     }
+    refreshPage();
+    toggleRegisterBar();
 }
 
 window.addEventListener("load", refreshPage);
@@ -120,6 +129,12 @@ function refreshPage()
     .then(data => {
         console.log("REFRESH FETCH !!");
         console.log(data);
+
+        // Reset the markers
+        for (let i = 0; i < marker_arr.length; ++i) {
+            marker_arr[i].marker.remove();
+        }
+
         marker_arr = [];
         console.log("LENGTH: " + data.length);
         for (var i = 0; i < data.length; ++i) {
