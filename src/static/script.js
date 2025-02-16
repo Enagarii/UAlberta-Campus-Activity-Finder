@@ -234,9 +234,9 @@ eventLocationInput.placeholder = "Location";
 eventLocationInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
 registerContent.appendChild(eventLocationInput);
 
-// Event Date/Time Input
+// Event Date/Time Input as datetime-local
 const eventDateTimeInput = document.createElement("input");
-eventDateTimeInput.placeholder = "Date/Time";
+eventDateTimeInput.type = "datetime-local";
 eventDateTimeInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
 registerContent.appendChild(eventDateTimeInput);
 
