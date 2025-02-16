@@ -73,8 +73,16 @@ function createEvent()
         for (let j = 0; j < reqdiv.children.length; ++j) {
             if (reqdiv.children[j].value == "") {
                 valid_input = false;
-                eventTitleDiv.classList.add("error");
+                filled = false;
             }
+        }
+
+        console.log(filled);
+
+        if (filled) reqdiv.classList.remove("error");
+        else {
+            reqdiv.classList.add("error");
+            valid_input = false;
         }
     }
 
