@@ -160,3 +160,7 @@ function refreshPage()
     })
     .catch(error => console.error('Error loading markers:', error));
 }
+
+// var marker = L.marker([53.52173731864776, -113.53026918095853]
+//     {title: 'Dice'}.addTo(map)
+//     .bindPopup('This is where the event is'));
