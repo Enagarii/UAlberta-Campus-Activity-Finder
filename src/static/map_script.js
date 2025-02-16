@@ -140,7 +140,7 @@ function refreshPage()
         for (var i = 0; i < data.length; ++i) {
             console.log(lat, lon);
 
-            let i_marker = {"marker": L.marker([data[i].lat, data[i].lon]).addTo(map).bindPopup('Marker: ' + i)};
+            let i_marker = {"marker": L.marker([data[i].lat, data[i].lon]).addTo(map).bindPopup(data[i].title == undefined ? "Activity :D" : data[i].title)};
 
             // Check the contents
             if (data[i].title == undefined) i_marker["title"] = "NA";
