@@ -213,12 +213,8 @@ function updateEvent() {
       if (data.title == undefined) currentEventTitle.innerHTML = "NA";
       else currentEventTitle.innerHTML = data.title;
 
-      if (data.eventDateTimeInput == undefined) {
-        currentEventTime.innerHTML = "Time: NA";
-      } else {
-        const eventDate = new Date(data.eventDateTimeInput);
-        currentEventTime.innerHTML = "Time: " + eventDate.toLocaleString();
-      }
+      if (data.time == undefined) currentEventTime.innerHTML = "Time: NA";
+      else currentEventTime.innerHTML = "Time: " + data.time;
 
       if (data.location == undefined) currentEventLocation.innerHTML = "Location: NA";
       else currentEventLocation.innerHTML = "Location: " + data.location;
