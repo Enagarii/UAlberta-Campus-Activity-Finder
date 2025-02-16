@@ -121,16 +121,16 @@ topContainer.appendChild(upcomingTab);
 const registerContainer = document.createElement("div");
 registerContainer.setAttribute("style", "width: 100%; margin-bottom: 20px;");
 
-// Registration Header (with arrow, always transparent with bottom border)
+// Registration Header (always transparent with bottom border and an arrow)
 const registerHeader = document.createElement("div");
 registerHeader.innerHTML = "Register your event <span class='arrow'>▼</span>";
 registerHeader.setAttribute("style",
-  "width: 93%; padding: 10px; margin: 10px 0; text-align: center; background: transparent; border-bottom: 2px solid rgb(39,93,56); cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: black;"
+  "width: 93%; padding: 10px; margin: 10px 0; text-align: center; background: transparent; border-top: 2px solid rgb(39,93,56); border-bottom: 2px solid rgb(39,93,56); cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: black;"
 );
 
-// Registration Content (the form) - initially hidden
+// Registration Content (the form) - initially collapsed with animation
 const registerContent = document.createElement("div");
-registerContent.setAttribute("style", "width: 100%; display: none; flex-direction: column; align-items: center; margin-top: 10px;");
+registerContent.setAttribute("style", "width: 100%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; flex-direction: column; align-items: center; margin-top: 10px;");
 
 // Username Input
 const UsernameInput = document.createElement("input");
@@ -177,15 +177,13 @@ createEventButton.setAttribute(
 );
 registerContent.appendChild(createEventButton);
 
-// Toggle the registration subtab when the header is clicked
+// Toggle the registration subtab when the header is clicked with animation
 registerHeader.addEventListener("click", function() {
-  if (registerContent.style.display === "none") {
-    registerContent.style.display = "flex";
-    // Change arrow to up
+  if (registerContent.style.maxHeight === "0px" || registerContent.style.maxHeight === "") {
+    registerContent.style.maxHeight = "500px"; // Expand (adjust as needed)
     registerHeader.querySelector(".arrow").textContent = "▲";
   } else {
-    registerContent.style.display = "none";
-    // Change arrow to down
+    registerContent.style.maxHeight = "0px"; // Collapse
     registerHeader.querySelector(".arrow").textContent = "▼";
   }
 });
