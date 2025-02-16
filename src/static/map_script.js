@@ -116,6 +116,7 @@ function createEvent()
     }
     refreshPage();
     toggleRegisterBar();
+    cleanEventRegister();
 }
 
 window.addEventListener("load", refreshPage);

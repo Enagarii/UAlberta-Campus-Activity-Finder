@@ -281,16 +281,34 @@ eventLocationDiv.appendChild(eventLocationInput);
 registerContent.appendChild(eventLocationDiv);
 
 // Event Date/Time Input
+const eventDateTimeDiv = document.createElement("div");
+eventDateTimeDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
+eventDateTimeDiv.setAttribute("class", "required event_input");
+eventDateTimeDiv.setAttribute("id", "time");
+
+
 const eventDateTimeInput = document.createElement("input");
 eventDateTimeInput.type = "datetime-local";
 eventDateTimeInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-registerContent.appendChild(eventDateTimeInput);
+// Adjust the children
+eventDateTimeDiv.appendChild(eventDateTimeInput);
+registerContent.appendChild(eventDateTimeDiv);
+
 
 // Event Description Input (Textarea)
+const eventDescriptionDiv = document.createElement("div");
+eventDescriptionDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
+eventDescriptionDiv.setAttribute("class", "event_input");
+eventDescriptionDiv.setAttribute("id", "description");
+
+
 const eventDescriptionInput = document.createElement("textarea");
 eventDescriptionInput.placeholder = "Description";
 eventDescriptionInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; resize: vertical; box-sizing: border-box;");
-registerContent.appendChild(eventDescriptionInput);
+// Adjust the children (not the children !!!)
+eventDescriptionDiv.appendChild(eventDescriptionInput);
+registerContent.appendChild(eventDescriptionDiv);
+
 
 // Create Event Button (with green background)
 const createEventButton = document.createElement("button");
@@ -301,55 +319,6 @@ createEventButton.setAttribute(
 );
 registerContent.appendChild(createEventButton);
 
-// ------------------------------
-// 7.1. Create Event Functionality
-// ------------------------------
-createEventButton.addEventListener("click", function() {
-  // Get values from input fields
-  const title = eventTitleInput.value;
-  const location = eventLocationInput.value;
-  const datetimeValue = eventDateTimeInput.value;
-  const description = eventDescriptionInput.value;
-
-  // Validate required fields
-  if (!title || !location || !datetimeValue) {
-    alert("Please fill in all required fields: Title, Location, and Date/Time.");
-    return;
-  }
-
-  // Create event object
-  const eventObj = {
-    title: title,
-    location: location,
-    time: datetimeValue,
-    description: description
-  };
-
-  // Create a new event element to display in the event list
-  const newEventElement = document.createElement("div");
-  newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
-  newEventElement.innerHTML = eventObj.title + " - " + new Date(eventObj.time).toLocaleString();
-
-  // On click, update the selected event details in the current event display area
-  newEventElement.addEventListener("click", function() {
-    currentEvent.style.display = "block";
-    currentEventTitle.innerHTML = eventObj.title;
-    currentEventTime.innerHTML = "Time: " + new Date(eventObj.time).toLocaleString();
-    currentEventLocation.innerHTML = "Location: " + eventObj.location;
-    currentEventDescription.innerHTML = eventObj.description ? "Description - " + eventObj.description : "";
-  });
-
-  // Classify event based on its date/time compared to the current time
-  const now = new Date();
-  const eventTime = new Date(datetimeValue);
-  if (eventTime <= now) {
-    // Append to Current Events if the event time is in the past or now
-    currentContent.appendChild(newEventElement);
-  } else {
-    // Append to Upcoming Events if the event time is in the future
-    upcomingContent.appendChild(newEventElement);
-  }
-});
 
 // Toggle the registration subtab when the header is clicked with animation
 function toggleRegisterBar() {
@@ -362,23 +331,49 @@ function toggleRegisterBar() {
   }
 }
 
+
 registerHeader.addEventListener("click", function() {toggleRegisterBar();});
+
 
 function updateEventContents() {
   // Check the error codes and make them accordingly
   for (let i = 0; i < registerContent.children.length; ++i) {
-    if (registerContent.children[i].tagName.toLowerCase() != "div") continue;
-    console.log("i-" + i + ": " + registerContent.children[i].classList);
-    if (registerContent.children[i].classList.contains("error")) {
+    let i_child = registerContent.children[i];
+    if (i_child.tagName.toLowerCase() != "div") continue;
+    console.log("i-" + i + ": " + i_child.classList);
+    if (i_child.classList.contains("error")) {
+      // check if they have an error code
+      let error_code = false;
+      for (let j = 0; j < i_child.children.length; ++j) {
+        error_code |= i_child.children[j].classList.contains("error_message");
+      }
+      if (error_code) continue;
+
+
       const errorCode = document.createElement("p");
       errorCode.setAttribute(
         "style",
         "color: rgb(255, 0, 0); margin: 0px 0px; font-size: 14px; text-align: right; padding-right: 20px;"
       );
       errorCode.innerHTML = "Invalid Input / Required Field";
-      console.log(errorCode);
-      registerContent.children[i].appendChild(errorCode);
-      console.log(registerContent.children[i]);
+      errorCode.setAttribute("class", "error_message");
+      i_child.appendChild(errorCode);
+    } else {
+      for (let j = i_child.children.length - 1; j >= 0; --j) {
+        if (i_child.children[j].classList.contains("error_message")) i_child.children[j].remove();
+      }
+    }
+  }
+}
+
+
+function cleanEventRegister() {
+  // Reset the register
+  for (let i = 0; i < registerContent.children.length; ++i) {
+    let i_child = registerContent.children[i];
+    for (let j = i_child.children.length - 1; j >= 0; --j) {
+      if (i_child.children[j].classList.contains("error_message")) i_child.children[j].remove();
+      else if (i_child.children[j].value != undefined) i_child.children[j].value = "";
     }
   }
 }
