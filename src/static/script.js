@@ -315,6 +315,7 @@ function toggleRegisterBar() {
 registerHeader.addEventListener("click", function() {toggleRegisterBar();});
 
 function updateEventContents() {
+  // Check the error codes and make them accordingly
   for (let i = 0; i < registerContent.children.length; ++i) {
     if (registerContent.children[i].tagName.toLowerCase() != "div") continue;
     console.log("i-" + i + ": " + registerContent.children[i].classList);
