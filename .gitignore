@@ -1,2 +1,3 @@
 *.json
 src/static/JSON/events.json
+src/static/JSON/edescription.json
