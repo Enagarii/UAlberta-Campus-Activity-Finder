@@ -78,12 +78,11 @@ body.appendChild(navWrapper);
 
 // ------------------------------
 // 4. Sidebar (slides in/out on toggle)
-//    - No initial box-shadow here
 // ------------------------------
 const sidebar = document.createElement("div");
 sidebar.setAttribute(
   "style",
-  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease-in-out; transform: translateX(0);"
+  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000;"
 );
 body.appendChild(sidebar);
 
@@ -91,22 +90,21 @@ body.appendChild(sidebar);
 let sidebarVisible = true;
 
 // ------------------------------
-// 5. Toggle Sidebar & Box Shadow
+// 5. Toggle Sidebar & Box Shadow (Map container remains constant)
 // ------------------------------
 navWrapper.addEventListener("click", function() {
-  if (sidebarVisible) {
-    // Slide out (off screen to the left), remove shadow
-    sidebar.style.transform = "translateX(-100%)";
-    sidebar.style.boxShadow = "none";
-    sidebarVisible = false;
-  } else {
-    // Slide back in, add shadow on the right
-    sidebar.style.transform = "translateX(0)";
-    sidebar.style.boxShadow = "2px 0 10px rgba(0,0,0,0.3)";
-    sidebarVisible = true;
-  }
+    if (sidebarVisible) {
+      // Slide out (hide sidebar) and remove shadow
+      sidebar.style.transform = "translateX(-100%)";
+      sidebar.style.boxShadow = "none";
+      sidebarVisible = false;
+    } else {
+      // Slide back in (show sidebar) and add shadow on the right
+      sidebar.style.transform = "translateX(0)";
+      sidebar.style.boxShadow = "2px 0 10px rgba(0,0,0,0.3)";
+      sidebarVisible = true;
+    }
 });
-
 /// ------------------------------
 // 5. "Create Event" Button in Sidebar (at the top, rounded, same text style)
 // ------------------------------
@@ -167,7 +165,7 @@ body.appendChild(banner);
 // ------------------------------
 const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
-mapdiv.setAttribute("style", "height: 700px; width: 80%; float: right; margin-right: 1%;");
+mapdiv.setAttribute("style", "height: 820px; width: 98%; float: right; margin-right: 1%;");
 body.appendChild(mapdiv);
 
 // ------------------------------
