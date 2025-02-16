@@ -20,6 +20,22 @@ function sendData(pinData)
     .catch(error => console.error('Error:', error));
 }
 
+function changeEventData(pinData) 
+{
+    fetch('/api/event', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: pinData })  // Send the message as JSON
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.reply);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
 function getData()
 {
     fetch('/api/data', {

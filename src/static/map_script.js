@@ -146,6 +146,10 @@ function refreshPage()
         }
         time_arr.sort();
 
+        // Reset the CurrentContent and Upcoming Content
+        while (upcomingContent.children.length > 0) upcomingContent.children[0].remove();
+        while (currentContent.children.length > 0) currentContent.children[0].remove();
+
         new_obj = [];
         let now = new Date();
         for (let i = 0; i < time_arr.length; ++i) {
@@ -158,13 +162,11 @@ function refreshPage()
             newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
             newEventElement.innerHTML = new_event.title + " & " + new_event.location + "\nTime: " + new_event.start_time + "-" + new_event.end_time;
 
-            console.log(newEventElement);
-
             // Classify event based on its date/time interval
-            if (now >= time_arr[i][0] && now <= time_arr[i][2]) {
+            if (now >= time_arr[i][0] && now <= time_arr[i][1]) {
                 console.log("Append to Current Content");
                 currentContent.appendChild(newEventElement);
-            } else if (now < time_arr[i][0]) {
+            } else {
                 console.log("Append to Upcoming Content");
                 upcomingContent.appendChild(newEventElement);
             }
@@ -177,6 +179,8 @@ function refreshPage()
             i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
             marker_arr.push(i_marker);
         }
+
+        changeEventData(new_obj);
     })
     .catch(error => console.error('Error loading markers:', error));
 }

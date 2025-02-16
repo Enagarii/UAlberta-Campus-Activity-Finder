@@ -28,6 +28,19 @@ def receive_data():
     
     return jsonify(response)
 
+@app.route('/api/event', methods=['POST'])
+def event_data():
+    data = request.get_json()
+    message = data.get("message", "")
+    response = {"reply": message}
+    
+    write_file = open('static/JSON/events.json', 'w')
+    write_file.write(json.dumps(message))
+    write_file.close()
+    
+    return jsonify(response)
+    
+
 @app.route('/api/desc', methods=['POST'])
 def description_data():
     data = request.get_json()
