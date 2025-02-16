@@ -1,4 +1,7 @@
-var map = L.map('map').setView([53.5245, -113.525], 16);
+var map = L.map('map', {
+    zoomControl: false
+}).setView([53.5245, -113.525], 16);
+L.control.zoom({ position: 'topright' }).addTo(map);
 
 var lat = null
 var lon = null
