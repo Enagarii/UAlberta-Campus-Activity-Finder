@@ -284,7 +284,7 @@ registerContent.appendChild(eventLocationDiv);
 const eventStartDateTimeDiv = document.createElement("div");
 eventStartDateTimeDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
 eventStartDateTimeDiv.setAttribute("class", "required event_input");
-eventStartDateTimeDiv.setAttribute("id", "start-time");
+eventStartDateTimeDiv.setAttribute("id", "start_time");
 
 const startLabel = document.createElement("label");
 startLabel.textContent = "Start Date/Time:";
@@ -302,7 +302,7 @@ registerContent.appendChild(eventStartDateTimeDiv);
 const eventEndDateTimeDiv = document.createElement("div");
 eventEndDateTimeDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
 eventEndDateTimeDiv.setAttribute("class", "required event_input");
-eventEndDateTimeDiv.setAttribute("id", "end-time");
+eventEndDateTimeDiv.setAttribute("id", "end_time");
 
 const endLabel = document.createElement("label");
 endLabel.textContent = "End Date/Time:";
@@ -345,68 +345,6 @@ registerContent.appendChild(createEventButton);
 // ------------------------------
 // 7.1. Create Event Functionality (Classification by Start/End Time)
 // ------------------------------
-createEventButton.addEventListener("click", function() {
-  // Get values from input fields
-  const title = eventTitleInput.value;
-  const location = eventLocationInput.value;
-  const startDateTimeValue = eventStartDateTimeInput.value;
-  const endDateTimeValue = eventEndDateTimeInput.value;
-  const description = eventDescriptionInput.value;
-
-  // Validate required fields
-  if (!title || !location || !startDateTimeValue || !endDateTimeValue) {
-    alert("Please fill in all required fields: Title, Location, Start and End Date/Time.");
-    return;
-  }
-
-  const startTime = new Date(startDateTimeValue);
-  const endTime = new Date(endDateTimeValue);
-  const now = new Date();
-
-  // Validate that the end time is after the start time and that the event hasn't already ended
-  if (endTime <= startTime) {
-    alert("End Date/Time must be after Start Date/Time.");
-    return;
-  }
-  if (endTime < now) {
-    alert("This event has already ended.");
-    return;
-  }
-
-  // Create event object
-  const eventObj = {
-    title: title,
-    location: location,
-    start: startDateTimeValue,
-    end: endDateTimeValue,
-    description: description
-  };
-
-  // Create a new event element to display in the event list
-  const newEventElement = document.createElement("div");
-  newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
-  newEventElement.innerHTML = eventObj.title + " - " +
-    new Date(eventObj.start).toLocaleString() + " to " + new Date(eventObj.end).toLocaleString();
-
-  // On click, update the selected event details in the current event display area
-  newEventElement.addEventListener("click", function() {
-    currentEvent.style.display = "block";
-    currentEventTitle.innerHTML = eventObj.title;
-    currentEventTime.innerHTML = "Time: " +
-      new Date(eventObj.start).toLocaleString() + " - " + new Date(eventObj.end).toLocaleString();
-    currentEventLocation.innerHTML = "Location: " + eventObj.location;
-    currentEventDescription.innerHTML = eventObj.description ? "Description - " + eventObj.description : "";
-  });
-
-  // Classify event based on its date/time interval:
-  // - Current Events: if now is between the start and end times.
-  // - Upcoming Events: if the event hasn't started yet.
-  if (now >= startTime && now <= endTime) {
-    currentContent.appendChild(newEventElement);
-  } else if (now < startTime) {
-    upcomingContent.appendChild(newEventElement);
-  }
-});
 
 // Toggle the registration subtab when the header is clicked with animation
 function toggleRegisterBar() {
@@ -419,9 +357,7 @@ function toggleRegisterBar() {
   }
 }
 
-
 registerHeader.addEventListener("click", function() {toggleRegisterBar();});
-
 
 function updateEventContents() {
   // Check the error codes and make them accordingly
