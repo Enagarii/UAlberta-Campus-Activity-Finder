@@ -82,7 +82,7 @@ body.appendChild(navWrapper);
 const sidebar = document.createElement("div");
 sidebar.setAttribute(
   "style",
-  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000;"
+  "position: fixed; top: 0; left: 0; width: 18%; height: 100%; background-color: rgb(255, 255, 255); color: rgb(255, 255, 255); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px;"
 );
 body.appendChild(sidebar);
 
@@ -105,26 +105,12 @@ navWrapper.addEventListener("click", function() {
       sidebarVisible = true;
     }
 });
-/// ------------------------------
-// 5. "Create Event" Button in Sidebar (at the top, rounded, same text style)
-// ------------------------------
-const createEventButton = document.createElement("button");
-createEventButton.textContent = "Create Event";
-createEventButton.setAttribute(
-  "style",
-  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39, 93, 56); border: 0px solid rgb(242,205,0); border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
-);
-
-sidebar.appendChild(createEventButton);
 
 // ------------------------------
-// 7. Vertical Tab Container (Current / Upcoming)
+// 6. Top Container: Vertical Tab Container (Current / Upcoming)
 // ------------------------------
-const tabContainer = document.createElement("div");
-tabContainer.setAttribute(
-  "style",
-  "width: 90%; display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;"
-);
+const topContainer = document.createElement("div");
+topContainer.setAttribute("style", "width: 100%;");
 
 // Current Events Tab
 const currentTab = document.createElement("div");
@@ -132,7 +118,7 @@ currentTab.textContent = "Current Events";
 currentTab.id = "currentTab";
 currentTab.setAttribute(
   "style",
-  "background: none; color: black; width: 100%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
 );
 
 // Upcoming Events Tab
@@ -141,16 +127,79 @@ upcomingTab.textContent = "Upcoming Events";
 upcomingTab.id = "upcomingTab";
 upcomingTab.setAttribute(
   "style",
-  "background: none; color: black; width: 100%; text-align: center; padding: 10px; margin: 10px 0; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
+  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; border-bottom: 2px solid rgb(39, 93, 56); cursor: pointer;"
 );
 
-// Add the tabs to the container, then container to the sidebar
-tabContainer.appendChild(currentTab);
-tabContainer.appendChild(upcomingTab);
-sidebar.appendChild(tabContainer);
+topContainer.appendChild(currentTab);
+topContainer.appendChild(upcomingTab);
 
 // ------------------------------
-// 8. Title Bar (Banner)
+// 7. Bottom Container: Event Input Form and Create Event Button
+// ------------------------------
+const bottomContainer = document.createElement("div");
+bottomContainer.setAttribute("style", "width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 20px; margin-bottom: 20px;");
+
+// Event Input Form (text boxes)
+const eventForm = document.createElement("div");
+eventForm.setAttribute("style", "width: 90%; margin-bottom: 10px; display: flex; flex-direction: column; align-items: center;");
+
+// Username Input
+const UsernameInput = document.createElement("input");
+UsernameInput.placeholder = "Username";
+UsernameInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+eventForm.appendChild(UsernameInput);
+
+// Password Input
+const PasswordInput = document.createElement("input");
+PasswordInput.placeholder = "Password";
+PasswordInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+eventForm.appendChild(PasswordInput);
+
+
+// Event Title Input
+const eventTitleInput = document.createElement("input");
+eventTitleInput.placeholder = "Event Title";
+eventTitleInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+eventForm.appendChild(eventTitleInput);
+
+// Event Location Input
+const eventLocationInput = document.createElement("input");
+eventLocationInput.placeholder = "Event Location";
+eventLocationInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+eventForm.appendChild(eventLocationInput);
+
+// Event Date/Time Input
+const eventDateTimeInput = document.createElement("input");
+eventDateTimeInput.placeholder = "Event Date/Time";
+eventDateTimeInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+eventForm.appendChild(eventDateTimeInput);
+
+// Event Description Input (Textarea)
+const eventDescriptionInput = document.createElement("textarea");
+eventDescriptionInput.placeholder = "Event Description";
+eventDescriptionInput.setAttribute("style", "width: 100%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; resize: vertical; box-sizing: border-box;");
+eventForm.appendChild(eventDescriptionInput);
+
+// Create Event Button
+const createEventButton = document.createElement("button");
+createEventButton.textContent = "Create Event";
+createEventButton.setAttribute(
+  "style",
+  "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39, 93, 56); border: 0px solid rgb(242,205,0); border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: rgb(242,205,0);"
+);
+
+// Append the event form and button to the bottom container
+bottomContainer.appendChild(eventForm);
+bottomContainer.appendChild(createEventButton);
+
+// ------------------------------
+// 8. Append Top and Bottom Containers to the Sidebar
+// ------------------------------
+sidebar.appendChild(topContainer);
+sidebar.appendChild(bottomContainer);
+
+// ------------------------------
+// 9. Title Bar (Banner)
 // ------------------------------
 const banner = document.createElement("div");
 banner.setAttribute(
@@ -161,7 +210,7 @@ banner.textContent = "Campus Activity Finder";
 body.appendChild(banner);
 
 // ------------------------------
-// 9. Map Container
+// 10. Map Container
 // ------------------------------
 const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
@@ -169,7 +218,7 @@ mapdiv.setAttribute("style", "height: 820px; width: 98%; float: right; margin-ri
 body.appendChild(mapdiv);
 
 // ------------------------------
-// 10. Example Event Listener
+// 11. Example Event Listener
 // ------------------------------
 upcomingTab.addEventListener("click", function() {
   console.log("Upcoming clicked");
