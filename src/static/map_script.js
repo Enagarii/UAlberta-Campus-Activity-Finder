@@ -333,12 +333,20 @@ function createEvent()
     updateEventContents();
     if (lat == null || lon == null) valid_input = false;
     if (!valid_input) return;
-    let new_event = { lat, lon };
+
+    let new_event = { "lat": lat, "lon": lon };
+
     for (let i = 0; i < registerContent.children.length; ++i) {
-    let propdiv = registerContent.children[i];
-    if (propdiv.tagName.toLowerCase() != "div" || !propdiv.classList.contains("event_input")) continue;
-    new_event[propdiv.id] = propdiv.children[0]?.value || "";
+      let propdiv = registerContent.children[i];
+      if (propdiv.tagName.toLowerCase() != "div" || !propdiv.classList.contains("event_input")) continue;
+      
+      new_event[propdiv.id] = "";
+      for (let j = 0; j < propdiv.children.length; ++j) {
+        if (propdiv.children[j].value == undefined) continue;
+        new_event[propdiv.id] += propdiv.children[j].value;
+      }
     }
+
     sendData(new_event);
     refreshPage();
     toggleRegisterBar();
