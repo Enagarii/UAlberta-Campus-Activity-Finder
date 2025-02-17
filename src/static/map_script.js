@@ -76,7 +76,7 @@ const bounds = L.latLngBounds(
   L.latLng(53.50507395114981, -113.55021677883585),   // SW
   L.latLng(53.537181589312924, -113.50538779321799)    // NE
 );
-var map = L.map('map', {
+let map = L.map('map', {
   zoomControl: false,
   maxBounds: bounds,
   maxBoundsViscosity: 1.0,
