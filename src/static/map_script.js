@@ -183,6 +183,7 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventDescriptionInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
+    currentEvent.style.backgroundColor = "#242424";
 
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
@@ -345,7 +346,7 @@ function createEvent()
  ***********************************************/
 window.addEventListener("load", refreshPage);
 
-let consolidatedRadius = 0.05;
+let consolidatedRadius = 0.0015;
 
 function refreshPage()
 {
@@ -430,56 +431,49 @@ function refreshPage()
                 upcomingContent.appendChild(newEventElement);
             }
         }
-
-        // Get the abs distance of the lat and lon by summing the square of each
-        let distance = [];
-        for (let i = 0; i < new_obj.length; ++i)
-        {
-            distance.push([(new_obj[i].lat * new_obj[i].lat) + (new_obj[i].lon * new_obj[i].lon), i]);
-        }
-
-        distance.sort();
-        //console.log(distance)
-        // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
+        
+        mark_vis = Array(new_obj.length).fill(0);
+        // Add everything that is within a certain distance in an array and find the center of them to display one marker
         consolidatedMarkers = [];
         currentDistanceIndex = 0;
-        let currentConsolidation = [distance[currentDistanceIndex]];
 
-        for (let i = 1; i < distance.length; ++i)
-        {
-            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= consolidatedRadius) 
-            {
-                //console.log("Pushing new distance" + i);
-                currentConsolidation.push(distance[i]);
-                
+        for (let i = 0; i < new_obj.length; ++i) {
+            console.log(mark_vis);
+            if (mark_vis[i]) continue;
+            let currentConsolidation = [new_obj[i]];
+
+            for (let j = i + 1; j < new_obj.length; ++j) {
+                if (mark_vis[j]) continue;
+
+                let lon_dist = new_obj[i].lon - new_obj[j].lon;
+                let lat_dist = new_obj[i].lat - new_obj[j].lat;
+                let vector_dist = lon_dist*lon_dist + lat_dist*lat_dist;
+                vector_dist *= 10000;
+                console.log("DIST: " + i + " to " + j + " -> " + vector_dist);
+                if (vector_dist <= consolidatedRadius) 
+                {
+                    mark_vis[j] = 1;
+                    currentConsolidation.push(new_obj[j]);
+                }
             }
-            else 
-            {
-                //console.log(currentConsolidation);
-                consolidatedMarkers.push(currentConsolidation);
-                currentDistanceIndex = i;
-                currentConsolidation = [distance[currentDistanceIndex]];
-            }
+            consolidatedMarkers.push(currentConsolidation);
         }
-        consolidatedMarkers.push(currentConsolidation)
+        console.log("CONSOLIDATION:::::");
         console.log(consolidatedMarkers);
 
         // Make the markers based on the consolidated groups
         for (let i = 0; i < consolidatedMarkers.length; ++i) {
             let consol_i = consolidatedMarkers[i];
-            let obj_arr = [];
             // Average out the lat
             let avg_lat = 0, avg_lon = 0;
             for (let j = 0; j < consol_i.length; ++j) {
-                let j_object = new_obj[consol_i[j][1]];
-                avg_lat += j_object.lat;
-                avg_lon += j_object.lon;
-                obj_arr.push(j_object);
+                avg_lat += consol_i[j].lat;
+                avg_lon += consol_i[j].lon;
             }
             avg_lat /= consol_i.length;
             avg_lon /= consol_i.length;
 
-            marker_arr.push({"marker": L.marker([avg_lat, avg_lon]).addTo(map).bindPopup("Activity Below :D"), "events": obj_arr});
+            marker_arr.push({"marker": L.marker([avg_lat, avg_lon]).addTo(map).bindPopup("Activity Below :D"), "events": consol_i});
         }
 
         changeEventData(new_obj);
