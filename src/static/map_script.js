@@ -5,7 +5,7 @@ const bounds = L.latLngBounds(
     L.latLng(53.537181589312924, -113.50538779321799)    //NE
 );
 
-var map = L.map('map', {
+let map = L.map('map', {
     zoomControl: false,
     maxBounds: bounds,          // Restrict panning to bounds
     maxBoundsViscosity: 1.0,    // Prevents moving outside of the bounds
@@ -13,8 +13,8 @@ var map = L.map('map', {
 }).setView([53.5245, -113.525], 16);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-var lat = null;
-var lon = null;
+let lat = null;
+let lon = null;
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 20,
@@ -23,6 +23,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 
 let marker_arr = [];
+let consolidatedMarkers = [];
 marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
 
 // Make the marker
@@ -139,38 +140,36 @@ function refreshPage()
     .then(data => {
 
         // Get the abs distance of the lat and lon by summing the square of each
-        var distance = [];
-        for (var i = 0; i < data.length; ++i)
+        let distance = [];
+        for (let i = 0; i < data.length; ++i)
         {
             distance.push([(data[i].lat * data[i].lat) + (data[i].lon * data[i].lon), i]);
         }
 
         distance.sort();
-        console.log(distance);
+        //console.log(distance)
         // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
-        var consolidatedMarkers = [];
+        consolidatedMarkers = [];
         currentDistanceIndex = 0;
-        var currentConsolidation = [distance[currentDistanceIndex]];
+        let currentConsolidation = [distance[currentDistanceIndex]];
 
-        for (var i = 1; i < distance.length - 1; ++i)
+        for (let i = 1; i < distance.length; ++i)
         {
-            console.log(Math.abs(distance[currentDistanceIndex][0] - distance[i][0]))
             if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
             {
-                console.log("Pushing new distance" + i);
+                //console.log("Pushing new distance" + i);
                 currentConsolidation.push(distance[i]);
                 
             }
             else 
             {
-                console.log(currentConsolidation);
+                //console.log(currentConsolidation);
                 consolidatedMarkers.push(currentConsolidation);
                 currentDistanceIndex = i;
                 currentConsolidation = [distance[currentDistanceIndex]];
-                i++;
             }
         }
-
+        consolidatedMarkers.push(currentConsolidation)
         console.log(consolidatedMarkers);
 
         // Reset the markers
@@ -242,7 +241,7 @@ function refreshPage()
 
         marker_arr = [];
         console.log("LENGTH: " + new_obj.length);
-        for (var i = 0; i < new_obj.length; ++i) {
+        for (let i = 0; i < new_obj.length; ++i) {
             let i_marker = Object.assign({}, new_obj[i]);
             i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
             marker_arr.push(i_marker);
