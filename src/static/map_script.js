@@ -183,7 +183,6 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventDescriptionInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
-    currentEvent.style.backgroundColor = "#242424";
 
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
