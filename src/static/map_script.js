@@ -166,8 +166,6 @@ function refreshPage()
 
         console.log(consolidatedMarkers);
 
-
-
         // Reset the markers
         for (let i = 0; i < marker_arr.length; ++i) {
             marker_arr[i].marker.remove();
@@ -211,6 +209,7 @@ function refreshPage()
         for (var i = 0; i < new_obj.length; ++i) {
             let i_marker = Object.assign({}, new_obj[i]);
             i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
+            marker_arr.push(i_marker);
         }
 
         changeEventData(new_obj);
