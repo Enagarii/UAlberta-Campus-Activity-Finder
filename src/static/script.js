@@ -430,10 +430,3 @@ const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
 mapdiv.setAttribute("style", "height: 820px; width: 98%; float: right; margin-right: 1%;");
 body.appendChild(mapdiv);
-
-// ------------------------------
-// 11. Example Event Listener
-// ------------------------------
-upcomingTab.addEventListener("click", function() {
-  console.log("Upcoming clicked");
-});
