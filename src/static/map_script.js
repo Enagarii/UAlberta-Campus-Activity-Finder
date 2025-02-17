@@ -95,6 +95,9 @@ var darkTiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/
 });
 lightTiles.addTo(map);
 
+let lat = null;
+let lon = null;
+
 /***********************************************
  * 4. Dark Mode Toggle (Switch Map Styles)
  ***********************************************/
@@ -169,9 +172,9 @@ toggleSwitch.addEventListener('change', function() {
 /***********************************************
  * 5. Map Click & Marker Handling
  ***********************************************/
-var lat = null, lon = null;
 let marker_arr = [];
 var marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
+let consolidatedMarkers = [];
 
 map.on('click', function(e) {
     lat = e.latlng.lat;
@@ -229,7 +232,6 @@ function createEvent() {
     new_event[propdiv.id] = propdiv.children[0]?.value || "";
   }
   sendData(new_event);
-
   refreshPage();
   toggleRegisterBar();
   cleanEventRegister();
@@ -239,20 +241,132 @@ function createEvent() {
  * 7. Refresh & Load Events
  ***********************************************/
 window.addEventListener("load", refreshPage);
-function refreshPage() {
+
+function refreshPage()
+{
+    getData();
+
+    // day function
+    function getOrdinal(n) {
+        const s = ["th", "st", "nd", "rd"];
+        const v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+
+    // Fetch the markers from the json file
     fetch('static/JSON/events.json')
     .then(response => response.json())
     .then(data => {
+
+        // Get the abs distance of the lat and lon by summing the square of each
+        let distance = [];
+        for (let i = 0; i < data.length; ++i)
+        {
+            distance.push([(data[i].lat * data[i].lat) + (data[i].lon * data[i].lon), i]);
+        }
+
+        distance.sort();
+        //console.log(distance)
+        // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
+        consolidatedMarkers = [];
+        currentDistanceIndex = 0;
+        let currentConsolidation = [distance[currentDistanceIndex]];
+
+        for (let i = 1; i < distance.length; ++i)
+        {
+            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
+            {
+                //console.log("Pushing new distance" + i);
+                currentConsolidation.push(distance[i]);
+                
+            }
+            else 
+            {
+                //console.log(currentConsolidation);
+                consolidatedMarkers.push(currentConsolidation);
+                currentDistanceIndex = i;
+                currentConsolidation = [distance[currentDistanceIndex]];
+            }
+        }
+        consolidatedMarkers.push(currentConsolidation)
+        console.log(consolidatedMarkers);
+
+        // Reset the markers
         for (let i = 0; i < marker_arr.length; ++i) {
             marker_arr[i].marker.remove();
         }
-        marker_arr = [];
+
+        // Sort the array based on time
+        let time_arr = [];
         for (let i = 0; i < data.length; ++i) {
-            let i_marker = Object.assign({}, data[i]);
-            i_marker.marker = L.marker([data[i].lat, data[i].lon]).addTo(map)
-                               .bindPopup(data[i].title || "Activity :D");
+            time_arr.push([new Date(data[i].start_time), new Date(data[i].end_time), i]);
+        }
+        time_arr.sort();
+
+        // Reset the CurrentContent and Upcoming Content
+        while (upcomingContent.children.length > 0) upcomingContent.children[0].remove();
+        while (currentContent.children.length > 0) currentContent.children[0].remove();
+
+        new_obj = [];
+        let now = new Date();
+        for (let i = 0; i < time_arr.length; ++i) {
+            if (time_arr[i][1] < now) continue;
+            new_obj.push(data[time_arr[i][2]]);
+
+            let new_event = data[time_arr[i][2]];
+
+            // Create a date object for start and end
+            let st = new Date(new_event.start_time);
+            let en = new Date(new_event.end_time);
+
+            // Format using weekday and month names and add ordinal suffixes for the day
+            const timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
+
+            const startWeekday = st.toLocaleDateString("en-US", { weekday: "long" });
+            const startMonth = st.toLocaleDateString("en-US", { month: "short" });
+            const startDay = st.getDate();
+            const startOrdinal = getOrdinal(startDay);
+            const startTimeStr = st.toLocaleTimeString("en-US", timeOptions);
+
+            const endWeekday = en.toLocaleDateString("en-US", { weekday: "long" });
+            const endMonth = en.toLocaleDateString("en-US", { month: "short" });
+            const endDay = en.getDate();
+            const endOrdinal = getOrdinal(endDay);
+            const endTimeStr = en.toLocaleTimeString("en-US", timeOptions);
+
+            // Make the Current and Upcoming Events element with conditional formatting:
+            const newEventElement = document.createElement("div");
+            newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
+
+            if (st.toDateString() === en.toDateString()) {
+              // Same day: show the day once.
+              newEventElement.innerHTML = 
+                `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endTimeStr}`;
+            } else {
+              // Different days: show both start and end days.
+              newEventElement.innerHTML = 
+                `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endWeekday}, ${endMonth} ${endOrdinal}, ${endTimeStr}`;
+            }
+            
+            // Classify event based on its date/time interval
+            if (now >= time_arr[i][0] && now <= time_arr[i][1]) {
+                console.log("Append to Current Content");
+                currentContent.appendChild(newEventElement);
+            } else {
+                console.log("Append to Upcoming Content");
+                upcomingContent.appendChild(newEventElement);
+            }
+        }
+
+        marker_arr = [];
+        console.log("LENGTH: " + new_obj.length);
+        for (let i = 0; i < new_obj.length; ++i) {
+            let i_marker = Object.assign({}, new_obj[i]);
+            i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
             marker_arr.push(i_marker);
         }
+
+        changeEventData(new_obj);
     })
     .catch(error => console.error('Error loading markers:', error));
 }

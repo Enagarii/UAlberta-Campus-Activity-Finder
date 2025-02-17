@@ -418,7 +418,7 @@ sidebar.appendChild(registerContainer);
 const banner = document.createElement("div");
 banner.setAttribute(
   "style",
-  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px; text-align: left; padding-left: 10%"
+  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px;"
 );
 banner.textContent = "Campus Activity Finder";
 body.appendChild(banner);
@@ -430,10 +430,3 @@ const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
 mapdiv.setAttribute("style", "height: 820px; width: 98%; float: right; margin-right: 1%;");
 body.appendChild(mapdiv);
-
-// ------------------------------
-// 11. Example Event Listener
-// ------------------------------
-upcomingTab.addEventListener("click", function() {
-  console.log("Upcoming clicked");
-});
