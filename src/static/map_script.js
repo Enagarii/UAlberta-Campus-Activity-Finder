@@ -184,6 +184,10 @@ toggleSwitch.addEventListener('change', function() {
     eventDescriptionInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
 
+    lineOne.style.backgroundColor = "rgb(220, 220, 220)";
+    lineTwo.style.backgroundColor = "rgb(220, 220, 220)";
+    lineThree.style.backgroundColor = "rgb(220, 220, 220)";
+
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
     eventStartDateTimeInput.style.color = "white";
@@ -232,6 +236,10 @@ toggleSwitch.addEventListener('change', function() {
     eventDescriptionInput.style.color = "black";
     eventLinkInput.style.color = "black";
     
+    lineOne.style.backgroundColor = "black";
+    lineTwo.style.backgroundColor = "black";
+    lineThree.style.backgroundColor = "black";
+
     currentEventDiv.classList.add("light");
     currentEventDiv.classList.remove("dark");
     for (let i = 0; i < currentEventDiv.children.length; ++i) {
