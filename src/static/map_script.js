@@ -247,10 +247,14 @@ toggleSwitchRed.addEventListener('change', function() {
     // Turn background red
     banner.style.backgroundColor = "#88c4fc";
     banner.style.color = "#f87c3c";
+    toggleLabelRed.style.color = "#f87c3c";
+    toggleLabel.style.color = "#f87c3c";
   } else {
     // Reset background to default
-    banner.style.backgroundColor = "green";
-    banner.style.color = "gold";
+    banner.style.backgroundColor = "rgb(39,93,56)";
+    banner.style.color = "rgb(242,205,0)";
+    toggleLabelRed.style.color = "rgb(242,205,0)";
+    toggleLabel.style.color = "rgb(242,205,0)";
   }
 });
 
