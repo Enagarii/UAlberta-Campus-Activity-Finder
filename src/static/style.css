@@ -18,6 +18,11 @@ body {
     filter: hue-rotate(120deg);
 }
 
+.markerSelect
+{
+    filter: hue-rotate(60deg);
+}
+
 .dark-mode {
     background-color: #323232;
     color: rgb(220, 220, 220);

@@ -194,7 +194,7 @@ let consolidatedMarkers = [];
 var markerOpacity = 0;
 
 marker = L.marker([0, 0]).addTo(map);
-marker._icon.classList.add("markerClass")
+marker._icon.classList.add("markerClass");
 marker.setOpacity(markerOpacity);
 
 map.on('click', function(e) {
@@ -213,7 +213,8 @@ document.addEventListener("click", function (e) {
     for (let i = 0; i < marker_arr.length; ++i) {
         if (marker_arr[i].marker.isPopupOpen()) {
             group_events = marker_arr[i].events;
-        }
+            marker_arr[i].marker._icon.classList.add("markerSelect");
+        } else marker_arr[i].marker._icon.classList.remove("markerSelect");
     }
     fetch('/api/desc', {
         method: 'POST',
