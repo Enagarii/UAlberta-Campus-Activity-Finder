@@ -167,9 +167,6 @@ function updateEvent() {
   fetch('static/JSON/edescription.json')
   .then(response => response.json())
   .then(data => {
-      console.log("UPDATE CURRENT EVENT");
-      console.log(data);
-
       // Reset the children of the div
       while (currentEventDiv.children.length > 0) {
         currentEventDiv.children[0].remove();
@@ -296,8 +293,6 @@ function updateEvent() {
         currentEventDescription.innerHTML = event_i.description
           ? "Description - " + event_i.description
           : "";
-
-        console.log(currentEvent);
         currentEventDiv.appendChild(currentEvent);
       }
   })
@@ -490,7 +485,6 @@ function updateEventContents() {
   for (let i = 0; i < registerContent.children.length; ++i) {
     let i_child = registerContent.children[i];
     if (i_child.tagName.toLowerCase() != "div") continue;
-    console.log("i-" + i + ": " + i_child.classList);
     if (i_child.classList.contains("error")) {
       // check if they have an error code
       let error_code = false;
@@ -559,10 +553,3 @@ const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
 mapdiv.setAttribute("style", "height: 820px; width: 98%; float: right; margin-right: 1%;");
 body.appendChild(mapdiv);
-
-// ------------------------------
-// 11. Example Event Listener
-// ------------------------------
-upcomingTab.addEventListener("click", function() {
-  console.log("Upcoming clicked");
-});

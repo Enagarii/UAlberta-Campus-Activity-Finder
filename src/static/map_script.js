@@ -321,8 +321,6 @@ function createEvent()
             }
         }
 
-        console.log(filled);
-
         if (filled) reqdiv.classList.remove("error");
         else {
             reqdiv.classList.add("error");
@@ -440,10 +438,8 @@ function refreshPage()
           
           // Classify event based on its date/time interval
           if (now >= time_arr[i][0] && now <= time_arr[i][1]) {
-              //console.log("Append to Current Content");
               currentContent.appendChild(newEventElement);
           } else {
-              //console.log("Append to Upcoming Content");
               upcomingContent.appendChild(newEventElement);
           }
       }
@@ -454,7 +450,6 @@ function refreshPage()
       currentDistanceIndex = 0;
 
       for (let i = 0; i < new_obj.length; ++i) {
-          //console.log(mark_vis);
           if (mark_vis[i]) continue;
           let currentConsolidation = [new_obj[i]];
 
@@ -465,7 +460,6 @@ function refreshPage()
               let lat_dist = new_obj[i].lat - new_obj[j].lat;
               let vector_dist = lon_dist*lon_dist + lat_dist*lat_dist;
               vector_dist *= 10000;
-              //console.log("DIST: " + i + " to " + j + " -> " + vector_dist);
               if (vector_dist <= consolidatedRadius) 
               {
                   mark_vis[j] = 1;
@@ -474,8 +468,6 @@ function refreshPage()
           }
           consolidatedMarkers.push(currentConsolidation);
       }
-      //console.log("CONSOLIDATION:::::");
-      //console.log(consolidatedMarkers);
 
       // Make the markers based on the consolidated groups
       for (let i = 0; i < consolidatedMarkers.length; ++i) {

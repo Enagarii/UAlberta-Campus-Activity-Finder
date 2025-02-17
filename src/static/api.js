@@ -4,7 +4,6 @@
 
 function sendData(pinData) 
 {
-    console.log(JSON.stringify({pinData}));
     fetch('/api/data', {
         method: 'POST',
         headers: {
@@ -14,7 +13,6 @@ function sendData(pinData)
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data.reply);
         refreshPage();
         toggleRegisterBar();
         cleanEventRegister();
@@ -33,7 +31,6 @@ function changeEventData(pinData)
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data.reply);
     })
     .catch(error => console.error('Error:', error));
 }
@@ -47,8 +44,6 @@ function getData()
         },
     })
     .then(response => response.json())
-    .then(data => {
-        console.log(data.reply)
-    })
+    .then(data => {})
     .catch(error => console.error('Error:', error));
 }
