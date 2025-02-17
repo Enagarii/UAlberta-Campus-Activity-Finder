@@ -13,10 +13,8 @@ let map = L.map('map', {
 }).setView([53.5245, -113.525], 16);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-let lat = null
-let lon = null
-var lat = null;
-var lon = null;
+let lat = null;
+let lon = null;
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 20,
