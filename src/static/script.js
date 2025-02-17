@@ -69,10 +69,7 @@ body.appendChild(navWrapper);
 // 4. Sidebar (slides in/out on toggle)
 // ------------------------------
 const sidebar = document.createElement("div");
-sidebar.setAttribute(
-  "style",
-  "position: fixed; top: 0; left: 0; width: 25%; height: 100%; background-color: rgb(255,255,255); color: black; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px;"
-);
+sidebar.setAttribute("style", "position: fixed; top: 0; left: 0; width: 25%; height: 100%; background-color: rgb(255,255,255); color: black; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease-in-out; transform: translateX(0); z-index: 1000; padding: 10px; overflow-y: auto;");  // Added overflow-y: auto;
 body.appendChild(sidebar);
 
 let sidebarVisible = true;
@@ -102,29 +99,17 @@ topContainer.setAttribute("style", "width: 100%;");
 const currentTab = document.createElement("div");
 currentTab.innerHTML = "Current Events <span class='arrow'>▼</span>";
 currentTab.id = "currentTab";
-currentTab.setAttribute(
-  "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 0; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
-);
+currentTab.setAttribute("style", "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-top: 50px; margin-bottom: 0; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;");
 const currentContent = document.createElement("div");
-currentContent.setAttribute(
-  "style",
-  "width: 93%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; margin-bottom: 10px;"
-);
+currentContent.setAttribute("style", "width: 93%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; margin-bottom: 10px;");
 
 // -- Upcoming Events Header and Content --
 const upcomingTab = document.createElement("div");
 upcomingTab.innerHTML = "Upcoming Events <span class='arrow'>▼</span>";
 upcomingTab.id = "upcomingTab";
-upcomingTab.setAttribute(
-  "style",
-  "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 0; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;"
-);
+upcomingTab.setAttribute("style", "background: none; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 0; border-bottom: 2px solid rgb(39,93,56); cursor: pointer;");
 const upcomingContent = document.createElement("div");
-upcomingContent.setAttribute(
-  "style",
-  "width: 93%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; margin-bottom: 10px;"
-);
+upcomingContent.setAttribute("style", "width: 93%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; margin-bottom: 10px;");
 
 topContainer.appendChild(currentTab);
 topContainer.appendChild(currentContent);
@@ -157,47 +142,39 @@ upcomingTab.addEventListener("click", function() {
 // 6.5. Selected Event to look at
 // ------------------------------
 const currentEvent = document.createElement("div");
-currentEvent.setAttribute(
-  "style",
-  "background: white; color: black; width: 93%; text-align: center; padding: 10px; margin-bottom: 10px; font-size: 10px;  border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none;"
-);
+currentEvent.setAttribute("style", "background: white; color: black; width: 93%; text-align: left; padding: 10px; margin-bottom: 10px; border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none;");
 
-
-// !!!!!!!!! TODO: Make this look better :D
+// Selected Event Title (Centered and Bigger)
 const currentEventTitle = document.createElement("h1");
-currentEventTitle.setAttribute(
-  "style",
-  ""
-);
+currentEventTitle.setAttribute("style", "text-align: center; font-size: 24px; margin: 0; padding: 5px;");
 
-const currentEventLocation = document.createElement("h2");
-currentEventTitle.setAttribute(
-  "style",
-  ""
-);
-
+// Selected Event Time (Left aligned)
 const currentEventTime = document.createElement("h2");
-currentEventTitle.setAttribute(
-  "style",
-  ""
-);
+currentEventTime.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px;");
 
+// Selected Event Location (Left aligned)
+const currentEventLocation = document.createElement("h2");
+currentEventLocation.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px;");
+
+// New Selected Event Link (Left aligned, clickable)
+const currentEventLink = document.createElement("a");
+currentEventLink.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px; display: block; color: blue; text-decoration: underline;");
+
+// Selected Event Description (Left aligned)
+// Updated style to force text wrapping and adjust height if needed.
 const currentEventDescription = document.createElement("p");
-currentEventTitle.setAttribute(
-  "style",
-  ""
-);
+currentEventDescription.setAttribute("style", "text-align: left; font-size: 14px; margin: 0; padding: 5px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;");
 
 currentEvent.appendChild(currentEventTitle);
 currentEvent.appendChild(currentEventTime);
 currentEvent.appendChild(currentEventLocation);
+currentEvent.appendChild(currentEventLink);  // Append link before description
 currentEvent.appendChild(currentEventDescription);
 
 topContainer.appendChild(currentEvent);
 
 // Update the current event based on user clicked
 function updateEvent() {
-  // Fetch the event description :D
   fetch('static/JSON/edescription.json')
   .then(response => response.json())
   .then(data => {
@@ -211,7 +188,6 @@ function updateEvent() {
 
       currentEvent.style.display = "block";
 
-      // Check the contents of the object
       if (data.title == undefined) currentEventTitle.innerHTML = "NA";
       else currentEventTitle.innerHTML = data.title;
 
@@ -220,6 +196,16 @@ function updateEvent() {
 
       if (data.location == undefined) currentEventLocation.innerHTML = "Location: NA";
       else currentEventLocation.innerHTML = "Location: " + data.location;
+
+      // Check if a link exists. If yes, make it clickable and visible, opening in a new tab.
+      if (data.link && data.link.trim() !== "") {
+          currentEventLink.href = data.link;
+          currentEventLink.innerHTML = data.link;
+          currentEventLink.setAttribute("target", "_blank");
+          currentEventLink.style.display = "block";
+      } else {
+          currentEventLink.style.display = "none";
+      }
 
       if (data.description == undefined) currentEventDescription.innerHTML = "";
       else currentEventDescription.innerHTML = "Description - " + data.description;
@@ -233,28 +219,14 @@ function updateEvent() {
 const registerContainer = document.createElement("div");
 registerContainer.setAttribute("style", "width: 100%; margin-bottom: 20px;");
 
-// Registration Header (always transparent with bottom border and an arrow)
 const registerHeader = document.createElement("div");
 registerHeader.innerHTML = "Register your event <span class='arrow'>▼</span>";
 registerHeader.setAttribute("style",
   "width: 93%; padding: 10px; margin: 10px 0; text-align: center; background: transparent; border-top: 2px solid rgb(39,93,56); border-bottom: 2px solid rgb(39,93,56); cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: black;"
 );
 
-// Registration Content (the form) - initially collapsed with animation
 const registerContent = document.createElement("div");
 registerContent.setAttribute("style", "width: 100%; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-in-out; flex-direction: column; align-items: center; margin-top: 10px;");
-
-// // Username Input
-// const UsernameInput = document.createElement("input");
-// UsernameInput.placeholder = "Username";
-// UsernameInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-// registerContent.appendChild(UsernameInput);
-
-// // Password Input
-// const PasswordInput = document.createElement("input");
-// PasswordInput.placeholder = "Password";
-// PasswordInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-// registerContent.appendChild(PasswordInput);
 
 // Event Title Input
 const eventTitleDiv = document.createElement("div");
@@ -265,7 +237,6 @@ eventTitleDiv.setAttribute("id", "title");
 const eventTitleInput = document.createElement("input");
 eventTitleInput.placeholder = "Event Title";
 eventTitleInput.setAttribute("style", "width: 90%; margin: 0px; padding: 8px; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-// Adjust the children
 eventTitleDiv.appendChild(eventTitleInput);
 registerContent.appendChild(eventTitleDiv);
 
@@ -278,7 +249,6 @@ eventLocationDiv.setAttribute("id", "location");
 const eventLocationInput = document.createElement("input");
 eventLocationInput.placeholder = "Location";
 eventLocationInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-// Adjust the children
 eventLocationDiv.appendChild(eventLocationInput);
 registerContent.appendChild(eventLocationDiv);
 
@@ -295,7 +265,6 @@ startLabel.setAttribute("style", "width: 90%; font-family: 'Roboto Slab', serif;
 const eventStartDateTimeInput = document.createElement("input");
 eventStartDateTimeInput.type = "datetime-local";
 eventStartDateTimeInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-
 eventStartDateTimeDiv.appendChild(startLabel);
 eventStartDateTimeDiv.appendChild(eventStartDateTimeInput);
 registerContent.appendChild(eventStartDateTimeDiv);
@@ -313,11 +282,9 @@ endLabel.setAttribute("style", "width: 90%; font-family: 'Roboto Slab', serif; f
 const eventEndDateTimeInput = document.createElement("input");
 eventEndDateTimeInput.type = "datetime-local";
 eventEndDateTimeInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
-
 eventEndDateTimeDiv.appendChild(endLabel);
 eventEndDateTimeDiv.appendChild(eventEndDateTimeInput);
 registerContent.appendChild(eventEndDateTimeDiv);
-
 
 // Event Description Input (Textarea)
 const eventDescriptionDiv = document.createElement("div");
@@ -325,14 +292,25 @@ eventDescriptionDiv.setAttribute("style", "flex-direction: column; align-items: 
 eventDescriptionDiv.setAttribute("class", "event_input");
 eventDescriptionDiv.setAttribute("id", "description");
 
-
 const eventDescriptionInput = document.createElement("textarea");
 eventDescriptionInput.placeholder = "Description";
 eventDescriptionInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; resize: vertical; box-sizing: border-box;");
-// Adjust the children (not the children !!!)
+
+// New Event Link Input
+const eventLinkDiv = document.createElement("div");
+eventLinkDiv.setAttribute("style", "flex-direction: column; align-items: center; gap: 0px 0px; margin: 5px 0px;");
+eventLinkDiv.setAttribute("class", "event_input");
+eventLinkDiv.setAttribute("id", "link");
+
+const eventLinkInput = document.createElement("input");
+eventLinkInput.placeholder = "Event Link (Optional)";
+eventLinkInput.setAttribute("style", "width: 90%; padding: 8px; margin: 5px 0; border: 1px solid rgb(242,205,0); border-radius: 5px; font-family: 'Roboto Slab', serif; font-size: 16px; color: black; box-sizing: border-box;");
+eventLinkDiv.appendChild(eventLinkInput);
+registerContent.appendChild(eventLinkDiv);
+
+// Append Description Input after Link
 eventDescriptionDiv.appendChild(eventDescriptionInput);
 registerContent.appendChild(eventDescriptionDiv);
-
 
 // Create Event Button (with green background)
 const createEventButton = document.createElement("button");
@@ -342,7 +320,6 @@ createEventButton.setAttribute(
   "width: 90%; padding: 10px; margin: 10px 0; background-color: rgb(39,93,56); border: none; border-radius: 25px; cursor: pointer; font-family: 'Roboto Slab', serif; font-weight: 600; font-size: 20px; color: white;"
 );
 registerContent.appendChild(createEventButton);
-
 
 // ------------------------------
 // 7.1. Create Event Functionality (Classification by Start/End Time)
@@ -386,7 +363,6 @@ function updateEventContents() {
       }
       if (error_code) continue;
 
-
       const errorCode = document.createElement("p");
       errorCode.setAttribute(
         "style",
@@ -402,7 +378,6 @@ function updateEventContents() {
     }
   }
 }
-
 
 function cleanEventRegister() {
   // Reset the register
@@ -431,7 +406,7 @@ sidebar.appendChild(registerContainer);
 const banner = document.createElement("div");
 banner.setAttribute(
   "style",
-  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px;"
+  "width: 100%; height: 100px; margin-bottom: 10px; background-color: rgb(39,93,56); box-shadow: 0px 3px 3px rgb(133,133,133); color: rgb(242,205,0); font-weight: 600; font-size: 60px; font-family: 'Roboto Slab', serif; display: flex; align-items: center; justify-content: center; margin-top: 0px; text-align: center;"
 );
 banner.textContent = "Campus Activity Finder";
 body.appendChild(banner);
@@ -443,3 +418,10 @@ const mapdiv = document.createElement("div");
 mapdiv.setAttribute("id", "map");
 mapdiv.setAttribute("style", "height: 820px; width: 98%; float: right; margin-right: 1%;");
 body.appendChild(mapdiv);
+
+// ------------------------------
+// 11. Example Event Listener
+// ------------------------------
+upcomingTab.addEventListener("click", function() {
+  console.log("Upcoming clicked");
+});
