@@ -126,13 +126,14 @@ toggleSwitch.addEventListener('change', function() {
     eventStartDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventEndDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventDescriptionInput.style.backgroundColor = "rgb(85, 85, 85)";
+    eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
 
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
     eventStartDateTimeInput.style.color = "white";
     eventEndDateTimeInput.style.color = "white";
     eventDescriptionInput.style.color = "white";
-
+    eventLinkInput.style.color = "white";
     
 
   } else {
@@ -160,12 +161,14 @@ toggleSwitch.addEventListener('change', function() {
     eventStartDateTimeInput.style.backgroundColor = "white";
     eventEndDateTimeInput.style.backgroundColor = "white";
     eventDescriptionInput.style.backgroundColor = "white";
+    eventLinkInput.style.backgroundColor = "white";
 
     eventTitleInput.style.color = "black";
     eventLocationInput.style.color = "black";
     eventStartDateTimeInput.style.color = "black";
     eventEndDateTimeInput.style.color = "black";
     eventDescriptionInput.style.color = "black";
+    eventLinkInput.style.color = "black";
   }
 });
 
