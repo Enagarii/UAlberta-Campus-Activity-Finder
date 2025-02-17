@@ -13,8 +13,8 @@ var map = L.map('map', {
 }).setView([53.5245, -113.525], 16);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-var lat = null
-var lon = null
+var lat = null;
+var lon = null;
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 20,
@@ -126,6 +126,13 @@ function refreshPage()
 {
     getData();
 
+    // day function
+    function getOrdinal(n) {
+        const s = ["th", "st", "nd", "rd"];
+        const v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+    }
+
     // Fetch the markers from the json file
     fetch('static/JSON/events.json')
     .then(response => response.json())
@@ -189,11 +196,40 @@ function refreshPage()
             new_obj.push(data[time_arr[i][2]]);
 
             let new_event = data[time_arr[i][2]];
-            // Make the Current and Upcoming Events
+
+            // Create a date object for start and end
+            let st = new Date(new_event.start_time);
+            let en = new Date(new_event.end_time);
+
+            // Format using weekday and month names and add ordinal suffixes for the day
+            const timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
+
+            const startWeekday = st.toLocaleDateString("en-US", { weekday: "long" });
+            const startMonth = st.toLocaleDateString("en-US", { month: "short" });
+            const startDay = st.getDate();
+            const startOrdinal = getOrdinal(startDay);
+            const startTimeStr = st.toLocaleTimeString("en-US", timeOptions);
+
+            const endWeekday = en.toLocaleDateString("en-US", { weekday: "long" });
+            const endMonth = en.toLocaleDateString("en-US", { month: "short" });
+            const endDay = en.getDate();
+            const endOrdinal = getOrdinal(endDay);
+            const endTimeStr = en.toLocaleTimeString("en-US", timeOptions);
+
+            // Make the Current and Upcoming Events element with conditional formatting:
             const newEventElement = document.createElement("div");
             newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
-            newEventElement.innerHTML = new_event.title + " & " + new_event.location + "\nTime: " + new_event.start_time + "-" + new_event.end_time;
 
+            if (st.toDateString() === en.toDateString()) {
+              // Same day: show the day once.
+              newEventElement.innerHTML = 
+                `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endTimeStr}`;
+            } else {
+              // Different days: show both start and end days.
+              newEventElement.innerHTML = 
+                `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endWeekday}, ${endMonth} ${endOrdinal}, ${endTimeStr}`;
+            }
+            
             // Classify event based on its date/time interval
             if (now >= time_arr[i][0] && now <= time_arr[i][1]) {
                 console.log("Append to Current Content");
@@ -216,3 +252,9 @@ function refreshPage()
     })
     .catch(error => console.error('Error loading markers:', error));
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Optionally, initialize any additional code here.
+});
+
+// The rest of your code (for event creation, updateEventContents, cleanEventRegister, etc.) remains unchanged.
