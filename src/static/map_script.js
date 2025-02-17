@@ -38,6 +38,36 @@ styleEl.innerHTML = `
   .s-toggle-switch:checked::before {
     transform: translateX(20px);
   }
+    /* Red Toggle switch styling */
+  .s-toggle-switch-red {
+    appearance: none;
+    width: 42px;
+    height: 22px;
+    background: #ccc;
+    border-radius: 22px;
+    position: relative;
+    outline: none;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .s-toggle-switch-red::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 3px;
+    left: 3px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+  .s-toggle-switch-red:checked {
+    background: red;
+  }
+  .s-toggle-switch-red:checked::before {
+    transform: translateX(20px);
+  }
+
 `;
 document.head.appendChild(styleEl);
 
@@ -68,6 +98,32 @@ toggleSwitch.type = 'checkbox';
 toggleContainer.appendChild(toggleLabel);
 toggleContainer.appendChild(toggleSwitch);
 document.body.appendChild(toggleContainer);
+
+// Second Toggle Container (Red)
+const toggleContainerRed = document.createElement('div');
+toggleContainerRed.classList.add('d-flex', 'ai-center', 'g8');
+toggleContainerRed.style.position = 'fixed';
+toggleContainerRed.style.top = '40px'; // Moves it below the first switch
+toggleContainerRed.style.right = '10px';
+toggleContainerRed.style.zIndex = '1000';
+
+// Second Toggle Label
+const toggleLabelRed = document.createElement('label');
+toggleLabelRed.classList.add('s-label');
+toggleLabelRed.setAttribute('for', 'toggle-switch-red');
+toggleLabelRed.textContent = "Colour Blind Mode";
+
+// Second Toggle Switch
+const toggleSwitchRed = document.createElement('input');
+toggleSwitchRed.classList.add('s-toggle-switch-red');
+toggleSwitchRed.id = 'toggle-switch-red';
+toggleSwitchRed.type = 'checkbox';
+
+// Append red toggle switch to UI
+toggleContainerRed.appendChild(toggleLabelRed);
+toggleContainerRed.appendChild(toggleSwitchRed);
+document.body.appendChild(toggleContainerRed);
+
 
 /***********************************************
  * 3. Setup the Leaflet Map
@@ -135,7 +191,13 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.color = "white";
     eventDescriptionInput.style.color = "white";
     eventLinkInput.style.color = "white";
-    currentEvent.style.color = "white";
+
+    currentEventDiv.classList.remove("light");
+    currentEventDiv.classList.add("dark");
+    for (let i = 0; i < currentEventDiv.children.length; ++i) {
+        currentEventDiv.children[i].style.backgroundColor = "#242424";
+        currentEventDiv.children[i].style.color = "white";
+    }
 
   } else {
     // Light Mode
@@ -170,9 +232,28 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.color = "black";
     eventDescriptionInput.style.color = "black";
     eventLinkInput.style.color = "black";
-    currentEvent.style.color = "black";
+    
+    currentEventDiv.classList.add("light");
+    currentEventDiv.classList.remove("dark");
+    for (let i = 0; i < currentEventDiv.children.length; ++i) {
+        currentEventDiv.children[i].style.color = "black";
+        currentEventDiv.children[i].style.backgroundColor = "white";
+    }
   }
 });
+// What happens when we click the red bitch
+toggleSwitchRed.addEventListener('change', function() {
+  if (this.checked) {
+    // Turn background red
+    banner.style.backgroundColor = "#88c4fc";
+    banner.style.color = "#f87c3c";
+  } else {
+    // Reset background to default
+    banner.style.backgroundColor = "green";
+    banner.style.color = "gold";
+  }
+});
+
 
 /***********************************************
  * 5. Map Click & Marker Handling
