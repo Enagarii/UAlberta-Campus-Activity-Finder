@@ -4,6 +4,8 @@
 const body = document.querySelector("body");
 body.setAttribute("style", "margin: 0; background: #fff;");
 
+var visibleMarker = false;
+
 // Dynamically load the "Roboto Slab" font
 const fontLink = document.createElement("link");
 fontLink.href = "https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@600&display=swap";
@@ -354,6 +356,17 @@ function toggleRegisterBar() {
   } else {
     registerContent.style.maxHeight = "0px"; // Collapse
     registerHeader.querySelector(".arrow").textContent = "▼";
+  }
+
+  if (markerOpacity == 0)
+  {
+    markerOpacity = 1;
+    marker.setOpacity(markerOpacity);
+  }
+  else
+  {
+    markerOpacity = 0;
+    marker.setOpacity(markerOpacity);
   }
 }
 

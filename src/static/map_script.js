@@ -24,14 +24,26 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let marker_arr = [];
 let consolidatedMarkers = [];
-marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
+
+var markerOpacity = 0;
+
+
+
+marker = L.marker([0, 0]).addTo(map);
+marker._icon.classList.add("markerClass")
+marker.setOpacity(markerOpacity);
+
+
 
 // Make the marker
 map.on('click', function(e) {
     // make a marker
-    lat = e.latlng.lat;
-    lon = e.latlng.lng;
-    marker.setLatLng([e.latlng.lat, e.latlng.lng]);
+    if (markerOpacity == 1)
+    {
+        lat = e.latlng.lat;
+        lon = e.latlng.lng;
+        marker.setLatLng([e.latlng.lat, e.latlng.lng]);
+    }
 });
 
 document.addEventListener("click", function (e) {
