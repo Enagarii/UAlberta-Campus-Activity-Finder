@@ -127,7 +127,6 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventDescriptionInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
-    currentEvent.style.backgroundColor = "#242424";
 
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
@@ -135,7 +134,13 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.color = "white";
     eventDescriptionInput.style.color = "white";
     eventLinkInput.style.color = "white";
-    currentEvent.style.color = "white";
+
+    currentEventDiv.classList.remove("light");
+    currentEventDiv.classList.add("dark");
+    for (let i = 0; i < currentEventDiv.children.length; ++i) {
+        currentEventDiv.children[i].style.backgroundColor = "#242424";
+        currentEventDiv.children[i].style.color = "white";
+    }
 
   } else {
     // Light Mode
@@ -163,7 +168,6 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.backgroundColor = "white";
     eventDescriptionInput.style.backgroundColor = "white";
     eventLinkInput.style.backgroundColor = "white";
-    currentEvent.style.backgroundColor = "white";
 
     eventTitleInput.style.color = "black";
     eventLocationInput.style.color = "black";
@@ -171,7 +175,13 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.color = "black";
     eventDescriptionInput.style.color = "black";
     eventLinkInput.style.color = "black";
-    currentEvent.style.color = "black";
+    
+    currentEventDiv.classList.add("light");
+    currentEventDiv.classList.remove("dark");
+    for (let i = 0; i < currentEventDiv.children.length; ++i) {
+        currentEventDiv.children[i].style.color = "black";
+        currentEventDiv.children[i].style.backgroundColor = "white";
+    }
   }
 });
 

@@ -194,6 +194,15 @@ function updateEvent() {
         currentEvent.appendChild(currentEventLink);  // Append link before description
         currentEvent.appendChild(currentEventDescription);
 
+        // Dark and Light mode
+        if (currentEventDiv.classList.contains("dark")) {
+          currentEvent.style.backgroundColor = "#242424";
+          currentEvent.style.color = "white";
+        } else if (currentEventDiv.classList.contains("light")) {
+          currentEvent.style.color = "black";
+          currentEvent.style.backgroundColor = "white";
+        }
+
         if (event_i.title == undefined) currentEventTitle.innerHTML = "NA";
         else currentEventTitle.innerHTML = event_i.title;
 
