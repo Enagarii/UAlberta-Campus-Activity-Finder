@@ -173,12 +173,9 @@ toggleSwitch.addEventListener('change', function() {
  * 5. Map Click & Marker Handling
  ***********************************************/
 let marker_arr = [];
-var marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
 let consolidatedMarkers = [];
 
 var markerOpacity = 0;
-
-
 
 marker = L.marker([0, 0]).addTo(map);
 marker._icon.classList.add("markerClass")
