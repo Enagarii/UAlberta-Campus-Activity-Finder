@@ -265,7 +265,7 @@ function createEvent()
  ***********************************************/
 window.addEventListener("load", refreshPage);
 
-let consolidatedRadius = 0.0005;
+let consolidatedRadius = 0.0015;
 
 function refreshPage()
 {
