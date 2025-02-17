@@ -129,6 +129,7 @@ toggleSwitch.addEventListener('change', function() {
     eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
     currentEvent.style.backgroundColor = "#242424";
 
+
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
     eventStartDateTimeInput.style.color = "white";
@@ -136,6 +137,9 @@ toggleSwitch.addEventListener('change', function() {
     eventDescriptionInput.style.color = "white";
     eventLinkInput.style.color = "white";
     currentEvent.style.color = "white";
+    lineOne.style.backgroundColor = "rgb(220, 220, 220)";
+    lineTwo.style.backgroundColor = "rgb(220, 220, 220)";
+    lineThree.style.backgroundColor = "rgb(220, 220, 220)";
 
   } else {
     // Light Mode
@@ -172,6 +176,10 @@ toggleSwitch.addEventListener('change', function() {
     eventDescriptionInput.style.color = "black";
     eventLinkInput.style.color = "black";
     currentEvent.style.color = "black";
+
+    lineOne.style.backgroundColor = "black";
+    lineTwo.style.backgroundColor = "black";
+    lineThree.style.backgroundColor = "black";
   }
 });
 
