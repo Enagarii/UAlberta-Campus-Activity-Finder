@@ -166,31 +166,29 @@ function refreshPage()
         }
 
         distance.sort();
-        console.log(distance);
+        //console.log(distance)
         // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
         var consolidatedMarkers = [];
         currentDistanceIndex = 0;
         var currentConsolidation = [distance[currentDistanceIndex]];
 
-        for (var i = 1; i < distance.length - 1; ++i)
+        for (var i = 1; i < distance.length; ++i)
         {
-            console.log(Math.abs(distance[currentDistanceIndex][0] - distance[i][0]))
             if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
             {
-                console.log("Pushing new distance" + i);
+                //console.log("Pushing new distance" + i);
                 currentConsolidation.push(distance[i]);
                 
             }
             else 
             {
-                console.log(currentConsolidation);
+                //console.log(currentConsolidation);
                 consolidatedMarkers.push(currentConsolidation);
                 currentDistanceIndex = i;
                 currentConsolidation = [distance[currentDistanceIndex]];
-                i++;
             }
         }
-
+        consolidatedMarkers.push(currentConsolidation)
         console.log(consolidatedMarkers);
 
 
