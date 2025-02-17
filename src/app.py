@@ -19,7 +19,8 @@ def get_data():
 
 @app.route('/api/data', methods=['POST'])
 def receive_data():
-    data = request.get_json()  # Get the JSON data from the request
+     # Get the JSON data from the request
+    data = request.get_json() 
     message = data.get("message", "")
 
     response = {"reply": message}
@@ -30,6 +31,7 @@ def receive_data():
 
 @app.route('/api/event', methods=['POST'])
 def event_data():
+    # Get the data from the json request
     data = request.get_json()
     message = data.get("message", "")
     response = {"reply": message}
@@ -43,9 +45,11 @@ def event_data():
 
 @app.route('/api/desc', methods=['POST'])
 def description_data():
+    # Get the data from the json request
     data = request.get_json()
     message = data.get("message", "")
     
+    # Make a response of the data from the request
     response = {"reply": message}
     
     ## print("EDESCRIPTION DUMP")
@@ -58,4 +62,5 @@ def description_data():
 
 
 if __name__ == '__main__':
+    # Run it locally on port 5500
     app.run(debug=True, port=5500)

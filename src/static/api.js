@@ -5,7 +5,6 @@
 function sendData(pinData) 
 {
     console.log(JSON.stringify({pinData}));
-
     fetch('/api/data', {
         method: 'POST',
         headers: {
