@@ -276,6 +276,8 @@ function createEvent()
  ***********************************************/
 window.addEventListener("load", refreshPage);
 
+let consolidatedRadius = 0.05;
+
 function refreshPage()
 {
     getData();
@@ -376,7 +378,7 @@ function refreshPage()
 
         for (let i = 1; i < distance.length; ++i)
         {
-            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
+            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= consolidatedRadius) 
             {
                 //console.log("Pushing new distance" + i);
                 currentConsolidation.push(distance[i]);
