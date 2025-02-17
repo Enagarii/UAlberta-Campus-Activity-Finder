@@ -124,15 +124,49 @@ window.addEventListener("load", refreshPage);
 
 function refreshPage()
 {
-    console.log("Refreshed.");
     getData();
 
     // Fetch the markers from the json file
     fetch('static/JSON/events.json')
     .then(response => response.json())
     .then(data => {
-        console.log("REFRESH FETCH !!");
-        console.log(data);
+
+        // Get the abs distance of the lat and lon by summing the square of each
+        var distance = [];
+        for (var i = 0; i < data.length; ++i)
+        {
+            distance.push([(data[i].lat * data[i].lat) + (data[i].lon * data[i].lon), i]);
+        }
+
+        distance.sort();
+        console.log(distance);
+        // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
+        var consolidatedMarkers = [];
+        currentDistanceIndex = 0;
+        var currentConsolidation = [distance[currentDistanceIndex]];
+
+        for (var i = 1; i < distance.length - 1; ++i)
+        {
+            console.log(Math.abs(distance[currentDistanceIndex][0] - distance[i][0]))
+            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
+            {
+                console.log("Pushing new distance" + i);
+                currentConsolidation.push(distance[i]);
+                
+            }
+            else 
+            {
+                console.log(currentConsolidation);
+                consolidatedMarkers.push(currentConsolidation);
+                currentDistanceIndex = i;
+                currentConsolidation = [distance[currentDistanceIndex]];
+                i++;
+            }
+        }
+
+        console.log(consolidatedMarkers);
+
+
 
         // Reset the markers
         for (let i = 0; i < marker_arr.length; ++i) {
@@ -177,7 +211,6 @@ function refreshPage()
         for (var i = 0; i < new_obj.length; ++i) {
             let i_marker = Object.assign({}, new_obj[i]);
             i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
-            marker_arr.push(i_marker);
         }
 
         changeEventData(new_obj);
