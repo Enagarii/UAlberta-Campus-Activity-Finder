@@ -347,10 +347,12 @@ function createEvent()
       }
     }
 
+    if (new_event["start_time"] == undefined || new_event["end_time"] == undefined || new_event["start_time"] > new_event["end_time"]) {
+      alert("Invalid Time Bounds");
+      return;
+    }
+
     sendData(new_event);
-    refreshPage();
-    toggleRegisterBar();
-    cleanEventRegister();
 }
 
 /***********************************************
@@ -362,133 +364,135 @@ let consolidatedRadius = 0.0015;
 
 function refreshPage()
 {
-    getData();
+  lat = null;
+  lon = null;
+  marker.setLatLng([0, 0]);
 
-    // day function
-    function getOrdinal(n) {
-        const s = ["th", "st", "nd", "rd"];
-        const v = n % 100;
-        return n + (s[(v - 20) % 10] || s[v] || s[0]);
-    }
+  // day function
+  function getOrdinal(n) {
+      const s = ["th", "st", "nd", "rd"];
+      const v = n % 100;
+      return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
 
-    // Fetch the markers from the json file
-    fetch('static/JSON/events.json')
-    .then(response => response.json())
-    .then(data => {
+  // Fetch the markers from the json file
+  fetch('static/JSON/events.json')
+  .then(response => response.json())
+  .then(data => {
 
-        // Reset the markers
-        for (let i = 0; i < marker_arr.length; ++i) {
-            marker_arr[i].marker.remove();
-        }
-        marker_arr = [];
+      // Reset the markers
+      for (let i = 0; i < marker_arr.length; ++i) {
+          marker_arr[i].marker.remove();
+      }
+      marker_arr = [];
 
-        // Sort the array based on time
-        let time_arr = [];
-        for (let i = 0; i < data.length; ++i) {
-            time_arr.push([new Date(data[i].start_time), new Date(data[i].end_time), i]);
-        }
-        time_arr.sort();
+      // Sort the array based on time
+      let time_arr = [];
+      for (let i = 0; i < data.length; ++i) {
+          time_arr.push([new Date(data[i].start_time), new Date(data[i].end_time), i]);
+      }
+      time_arr.sort();
 
-        // Reset the CurrentContent and Upcoming Content
-        while (upcomingContent.children.length > 0) upcomingContent.children[0].remove();
-        while (currentContent.children.length > 0) currentContent.children[0].remove();
+      // Reset the CurrentContent and Upcoming Content
+      while (upcomingContent.children.length > 0) upcomingContent.children[0].remove();
+      while (currentContent.children.length > 0) currentContent.children[0].remove();
 
-        new_obj = [];
-        let now = new Date();
-        for (let i = 0; i < time_arr.length; ++i) {
-            if (time_arr[i][1] < now) continue;
-            new_obj.push(data[time_arr[i][2]]);
+      new_obj = [];
+      let now = new Date();
+      for (let i = 0; i < time_arr.length; ++i) {
+          if (time_arr[i][1] < now) continue;
+          new_obj.push(data[time_arr[i][2]]);
 
-            let new_event = data[time_arr[i][2]];
+          let new_event = data[time_arr[i][2]];
 
-            // Create a date object for start and end
-            let st = new Date(new_event.start_time);
-            let en = new Date(new_event.end_time);
+          // Create a date object for start and end
+          let st = new Date(new_event.start_time);
+          let en = new Date(new_event.end_time);
 
-            // Format using weekday and month names and add ordinal suffixes for the day
-            const timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
+          // Format using weekday and month names and add ordinal suffixes for the day
+          const timeOptions = { hour: "numeric", minute: "numeric", hour12: true };
 
-            const startWeekday = st.toLocaleDateString("en-US", { weekday: "long" });
-            const startMonth = st.toLocaleDateString("en-US", { month: "short" });
-            const startDay = st.getDate();
-            const startOrdinal = getOrdinal(startDay);
-            const startTimeStr = st.toLocaleTimeString("en-US", timeOptions);
+          const startWeekday = st.toLocaleDateString("en-US", { weekday: "long" });
+          const startMonth = st.toLocaleDateString("en-US", { month: "short" });
+          const startDay = st.getDate();
+          const startOrdinal = getOrdinal(startDay);
+          const startTimeStr = st.toLocaleTimeString("en-US", timeOptions);
 
-            const endWeekday = en.toLocaleDateString("en-US", { weekday: "long" });
-            const endMonth = en.toLocaleDateString("en-US", { month: "short" });
-            const endDay = en.getDate();
-            const endOrdinal = getOrdinal(endDay);
-            const endTimeStr = en.toLocaleTimeString("en-US", timeOptions);
+          const endWeekday = en.toLocaleDateString("en-US", { weekday: "long" });
+          const endMonth = en.toLocaleDateString("en-US", { month: "short" });
+          const endDay = en.getDate();
+          const endOrdinal = getOrdinal(endDay);
+          const endTimeStr = en.toLocaleTimeString("en-US", timeOptions);
 
-            // Make the Current and Upcoming Events element with conditional formatting:
-            const newEventElement = document.createElement("div");
-            newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
+          // Make the Current and Upcoming Events element with conditional formatting:
+          const newEventElement = document.createElement("div");
+          newEventElement.setAttribute("style", "cursor: pointer; padding: 5px; border-bottom: 1px solid #ccc;");
 
-            if (st.toDateString() === en.toDateString()) {
-              // Same day: show the day once.
-              newEventElement.innerHTML = 
-                `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endTimeStr}`;
-            } else {
-              // Different days: show both start and end days.
-              newEventElement.innerHTML = 
-                `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endWeekday}, ${endMonth} ${endOrdinal}, ${endTimeStr}`;
-            }
-            
-            // Classify event based on its date/time interval
-            if (now >= time_arr[i][0] && now <= time_arr[i][1]) {
-                //console.log("Append to Current Content");
-                currentContent.appendChild(newEventElement);
-            } else {
-                //console.log("Append to Upcoming Content");
-                upcomingContent.appendChild(newEventElement);
-            }
-        }
-        
-        mark_vis = Array(new_obj.length).fill(0);
-        // Add everything that is within a certain distance in an array and find the center of them to display one marker
-        consolidatedMarkers = [];
-        currentDistanceIndex = 0;
+          if (st.toDateString() === en.toDateString()) {
+            // Same day: show the day once.
+            newEventElement.innerHTML = 
+              `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endTimeStr}`;
+          } else {
+            // Different days: show both start and end days.
+            newEventElement.innerHTML = 
+              `${new_event.title} - ${startWeekday}, ${startMonth} ${startOrdinal}, ${startTimeStr} to ${endWeekday}, ${endMonth} ${endOrdinal}, ${endTimeStr}`;
+          }
+          
+          // Classify event based on its date/time interval
+          if (now >= time_arr[i][0] && now <= time_arr[i][1]) {
+              //console.log("Append to Current Content");
+              currentContent.appendChild(newEventElement);
+          } else {
+              //console.log("Append to Upcoming Content");
+              upcomingContent.appendChild(newEventElement);
+          }
+      }
+      
+      mark_vis = Array(new_obj.length).fill(0);
+      // Add everything that is within a certain distance in an array and find the center of them to display one marker
+      consolidatedMarkers = [];
+      currentDistanceIndex = 0;
 
-        for (let i = 0; i < new_obj.length; ++i) {
-            //console.log(mark_vis);
-            if (mark_vis[i]) continue;
-            let currentConsolidation = [new_obj[i]];
+      for (let i = 0; i < new_obj.length; ++i) {
+          //console.log(mark_vis);
+          if (mark_vis[i]) continue;
+          let currentConsolidation = [new_obj[i]];
 
-            for (let j = i + 1; j < new_obj.length; ++j) {
-                if (mark_vis[j]) continue;
+          for (let j = i + 1; j < new_obj.length; ++j) {
+              if (mark_vis[j]) continue;
 
-                let lon_dist = new_obj[i].lon - new_obj[j].lon;
-                let lat_dist = new_obj[i].lat - new_obj[j].lat;
-                let vector_dist = lon_dist*lon_dist + lat_dist*lat_dist;
-                vector_dist *= 10000;
-                //console.log("DIST: " + i + " to " + j + " -> " + vector_dist);
-                if (vector_dist <= consolidatedRadius) 
-                {
-                    mark_vis[j] = 1;
-                    currentConsolidation.push(new_obj[j]);
-                }
-            }
-            consolidatedMarkers.push(currentConsolidation);
-        }
-        //console.log("CONSOLIDATION:::::");
-        //console.log(consolidatedMarkers);
+              let lon_dist = new_obj[i].lon - new_obj[j].lon;
+              let lat_dist = new_obj[i].lat - new_obj[j].lat;
+              let vector_dist = lon_dist*lon_dist + lat_dist*lat_dist;
+              vector_dist *= 10000;
+              //console.log("DIST: " + i + " to " + j + " -> " + vector_dist);
+              if (vector_dist <= consolidatedRadius) 
+              {
+                  mark_vis[j] = 1;
+                  currentConsolidation.push(new_obj[j]);
+              }
+          }
+          consolidatedMarkers.push(currentConsolidation);
+      }
+      //console.log("CONSOLIDATION:::::");
+      //console.log(consolidatedMarkers);
 
-        // Make the markers based on the consolidated groups
-        for (let i = 0; i < consolidatedMarkers.length; ++i) {
-            let consol_i = consolidatedMarkers[i];
-            // Average out the lat
-            let avg_lat = 0, avg_lon = 0;
-            for (let j = 0; j < consol_i.length; ++j) {
-                avg_lat += consol_i[j].lat;
-                avg_lon += consol_i[j].lon;
-            }
-            avg_lat /= consol_i.length;
-            avg_lon /= consol_i.length;
+      // Make the markers based on the consolidated groups
+      for (let i = 0; i < consolidatedMarkers.length; ++i) {
+          let consol_i = consolidatedMarkers[i];
+          // Average out the lat
+          let avg_lat = 0, avg_lon = 0;
+          for (let j = 0; j < consol_i.length; ++j) {
+              avg_lat += consol_i[j].lat;
+              avg_lon += consol_i[j].lon;
+          }
+          avg_lat /= consol_i.length;
+          avg_lon /= consol_i.length;
 
-            marker_arr.push({"marker": L.marker([avg_lat, avg_lon]).addTo(map).bindPopup("Activity Below :D"), "events": consol_i});
-        }
+          marker_arr.push({"marker": L.marker([avg_lat, avg_lon]).addTo(map).bindPopup("Activity Below :D"), "events": consol_i});
+      }
 
-        changeEventData(new_obj);
-    })
-    .catch(error => console.error('Error loading markers:', error));
+      changeEventData(new_obj);
+  })
+  .catch(error => console.error('Error loading markers:', error));
 }

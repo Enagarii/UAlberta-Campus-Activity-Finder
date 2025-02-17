@@ -15,6 +15,9 @@ function sendData(pinData)
     .then(response => response.json())
     .then(data => {
         console.log(data.reply);
+        refreshPage();
+        toggleRegisterBar();
+        cleanEventRegister();
     })
     .catch(error => console.error('Error:', error));
 }
