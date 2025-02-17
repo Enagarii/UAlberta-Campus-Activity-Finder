@@ -12,3 +12,21 @@ body {
     background-color: rgb(39, 93, 56);/* Dark green background */
 
 }
+
+.dark-mode {
+    background-color: #323232;
+    color: rgb(220, 220, 220);
+}
+
+.sidebar-dark {
+    background-color: rgb(50, 50, 50);
+    color: rgb(220, 220, 220);
+}
+
+.sidebar-dark a, .sidebar-dark div, .sidebar-dark span {
+    color: rgb(220, 220, 220);
+}
+
+.sidebar-dark .tab-dark {
+    border-bottom: 2px solid rgb(200, 169, 81);
+}
