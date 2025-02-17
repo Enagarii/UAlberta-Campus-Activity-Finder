@@ -187,8 +187,6 @@ marker = L.marker([0, 0]).addTo(map);
 marker._icon.classList.add("markerClass")
 marker.setOpacity(markerOpacity);
 
-
-
 map.on('click', function(e) {
     // make a marker
     if (markerOpacity == 1)
@@ -200,18 +198,17 @@ map.on('click', function(e) {
 });
 
 document.addEventListener("click", function (e) {
-    let json_event = { event: false };
+    // See if any popups are open
+    let group_events = [];
     for (let i = 0; i < marker_arr.length; ++i) {
         if (marker_arr[i].marker.isPopupOpen()) {
-            json_event = Object.assign({}, marker_arr[i]);
-            json_event["marker"] = undefined;
-            json_event["event"] = true;
+            group_events = marker_arr[i].events;
         }
     }
     fetch('/api/desc', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: json_event })
+        body: JSON.stringify({ message: group_events })
     }).then(response => response.json())
     .then(data => { updateEvent(); })
     .catch(error => console.error('Error:', error));
@@ -221,37 +218,47 @@ document.addEventListener("click", function (e) {
  * 6. Create Event Functionality
  ***********************************************/
 createEventButton.addEventListener("click", createEvent);
-function createEvent() {  
-  let valid_input = true;
-  for (let i = 0; i < registerContent.children.length; ++i) {
-    let reqdiv = registerContent.children[i];
-    if (reqdiv.tagName.toLowerCase() != "div" || !reqdiv.classList.contains("required")) continue;
-    let filled = true;
-    for (let j = 0; j < reqdiv.children.length; ++j) {
-      if (reqdiv.children[j].value == "") {
-        valid_input = false;
-        filled = false;
-      }
+function createEvent()
+{
+    // Check the data in create event
+    let valid_input = true;
+
+    for (let i = 0; i < registerContent.children.length; ++i) {
+        // Make sure it is a required div
+        let reqdiv = registerContent.children[i];
+        if (reqdiv.tagName.toLowerCase() != "div" || !reqdiv.classList.contains("required")) continue;
+
+        // Check the inputs of that div
+        let filled = true;
+        for (let j = 0; j < reqdiv.children.length; ++j) {
+            if (reqdiv.children[j].value == "") {
+                valid_input = false;
+                filled = false;
+            }
+        }
+
+        console.log(filled);
+
+        if (filled) reqdiv.classList.remove("error");
+        else {
+            reqdiv.classList.add("error");
+            valid_input = false;
+        }
     }
-    if (filled) reqdiv.classList.remove("error");
-    else {
-      reqdiv.classList.add("error");
-      valid_input = false;
-    }
-  }
-  updateEventContents();
-  if (lat == null || lon == null) valid_input = false;
-  if (!valid_input) return;
-  let new_event = { lat, lon };
-  for (let i = 0; i < registerContent.children.length; ++i) {
+
+    updateEventContents();
+    if (lat == null || lon == null) valid_input = false;
+    if (!valid_input) return;
+    let new_event = { lat, lon };
+    for (let i = 0; i < registerContent.children.length; ++i) {
     let propdiv = registerContent.children[i];
     if (propdiv.tagName.toLowerCase() != "div" || !propdiv.classList.contains("event_input")) continue;
     new_event[propdiv.id] = propdiv.children[0]?.value || "";
-  }
-  sendData(new_event);
-  refreshPage();
-  toggleRegisterBar();
-  cleanEventRegister();
+    }
+    sendData(new_event);
+    refreshPage();
+    toggleRegisterBar();
+    cleanEventRegister();
 }
 
 /***********************************************
@@ -275,43 +282,11 @@ function refreshPage()
     .then(response => response.json())
     .then(data => {
 
-        // Get the abs distance of the lat and lon by summing the square of each
-        let distance = [];
-        for (let i = 0; i < data.length; ++i)
-        {
-            distance.push([(data[i].lat * data[i].lat) + (data[i].lon * data[i].lon), i]);
-        }
-
-        distance.sort();
-        //console.log(distance)
-        // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
-        consolidatedMarkers = [];
-        currentDistanceIndex = 0;
-        let currentConsolidation = [distance[currentDistanceIndex]];
-
-        for (let i = 1; i < distance.length; ++i)
-        {
-            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
-            {
-                //console.log("Pushing new distance" + i);
-                currentConsolidation.push(distance[i]);
-                
-            }
-            else 
-            {
-                //console.log(currentConsolidation);
-                consolidatedMarkers.push(currentConsolidation);
-                currentDistanceIndex = i;
-                currentConsolidation = [distance[currentDistanceIndex]];
-            }
-        }
-        consolidatedMarkers.push(currentConsolidation)
-        console.log(consolidatedMarkers);
-
         // Reset the markers
         for (let i = 0; i < marker_arr.length; ++i) {
             marker_arr[i].marker.remove();
         }
+        marker_arr = [];
 
         // Sort the array based on time
         let time_arr = [];
@@ -375,12 +350,55 @@ function refreshPage()
             }
         }
 
-        marker_arr = [];
-        console.log("LENGTH: " + new_obj.length);
-        for (let i = 0; i < new_obj.length; ++i) {
-            let i_marker = Object.assign({}, new_obj[i]);
-            i_marker["marker"] = L.marker([new_obj[i].lat, new_obj[i].lon]).addTo(map).bindPopup(new_obj[i].title == undefined ? "Activity :D" : new_obj[i].title);
-            marker_arr.push(i_marker);
+        // Get the abs distance of the lat and lon by summing the square of each
+        let distance = [];
+        for (let i = 0; i < new_obj.length; ++i)
+        {
+            distance.push([(new_obj[i].lat * new_obj[i].lat) + (new_obj[i].lon * new_obj[i].lon), i]);
+        }
+
+        distance.sort();
+        //console.log(distance)
+        // Add everything that is within 0.20 distance in an array and find the center of them to display one marker
+        consolidatedMarkers = [];
+        currentDistanceIndex = 0;
+        let currentConsolidation = [distance[currentDistanceIndex]];
+
+        for (let i = 1; i < distance.length; ++i)
+        {
+            if (Math.abs(distance[currentDistanceIndex][0] - distance[i][0]) <= 0.20) 
+            {
+                //console.log("Pushing new distance" + i);
+                currentConsolidation.push(distance[i]);
+                
+            }
+            else 
+            {
+                //console.log(currentConsolidation);
+                consolidatedMarkers.push(currentConsolidation);
+                currentDistanceIndex = i;
+                currentConsolidation = [distance[currentDistanceIndex]];
+            }
+        }
+        consolidatedMarkers.push(currentConsolidation)
+        console.log(consolidatedMarkers);
+
+        // Make the markers based on the consolidated groups
+        for (let i = 0; i < consolidatedMarkers.length; ++i) {
+            let consol_i = consolidatedMarkers[i];
+            let obj_arr = [];
+            // Average out the lat
+            let avg_lat = 0, avg_lon = 0;
+            for (let j = 0; j < consol_i.length; ++j) {
+                let j_object = new_obj[consol_i[j][1]];
+                avg_lat += j_object.lat;
+                avg_lon += j_object.lon;
+                obj_arr.push(j_object);
+            }
+            avg_lat /= consol_i.length;
+            avg_lon /= consol_i.length;
+
+            marker_arr.push({"marker": L.marker([avg_lat, avg_lon]).addTo(map).bindPopup("Activity Below :D"), "events": obj_arr});
         }
 
         changeEventData(new_obj);

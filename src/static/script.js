@@ -141,74 +141,84 @@ upcomingTab.addEventListener("click", function() {
 // ------------------------------
 // 6.5. Selected Event to look at
 // ------------------------------
-const currentEvent = document.createElement("div");
-currentEvent.setAttribute("style", "background: white; color: black; width: 93%; text-align: left; padding: 10px; margin-bottom: 10px; border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: none;");
+const currentEventDiv = document.createElement("div");
+currentEventDiv.setAttribute(
+  "style",
+  "display: flex; flex-direction: column; height: 100%;"
+);
 
-// Selected Event Title (Centered and Bigger)
-const currentEventTitle = document.createElement("h1");
-currentEventTitle.setAttribute("style", "text-align: center; font-size: 24px; margin: 0; padding: 5px;");
-
-// Selected Event Time (Left aligned)
-const currentEventTime = document.createElement("h2");
-currentEventTime.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px;");
-
-// Selected Event Location (Left aligned)
-const currentEventLocation = document.createElement("h2");
-currentEventLocation.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px;");
-
-// New Selected Event Link (Left aligned, clickable)
-const currentEventLink = document.createElement("a");
-currentEventLink.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px; display: block; color: blue; text-decoration: underline;");
-
-// Selected Event Description (Left aligned)
-// Updated style to force text wrapping and adjust height if needed.
-const currentEventDescription = document.createElement("p");
-currentEventDescription.setAttribute("style", "text-align: left; font-size: 14px; margin: 0; padding: 5px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;");
-
-currentEvent.appendChild(currentEventTitle);
-currentEvent.appendChild(currentEventTime);
-currentEvent.appendChild(currentEventLocation);
-currentEvent.appendChild(currentEventLink);  // Append link before description
-currentEvent.appendChild(currentEventDescription);
-
-topContainer.appendChild(currentEvent);
+topContainer.appendChild(currentEventDiv);
 
 // Update the current event based on user clicked
 function updateEvent() {
   fetch('static/JSON/edescription.json')
   .then(response => response.json())
   .then(data => {
-      if (!data.event) {
-        currentEvent.style.display = "none";
-        return;
-      }
-
       console.log("UPDATE CURRENT EVENT");
       console.log(data);
 
-      currentEvent.style.display = "block";
+      // Reset the children of the div
+      while (currentEventDiv.children.length > 0) currentEventDiv.children[0].remove();
 
-      if (data.title == undefined) currentEventTitle.innerHTML = "NA";
-      else currentEventTitle.innerHTML = data.title;
+      for (let i = 0; i < data.length; ++i) {
+        let event_i = data[i];
 
-      if (data.time == undefined) currentEventTime.innerHTML = "Time: NA";
-      else currentEventTime.innerHTML = "Time: " + data.time;
+        //**** Make the Current Event that the user clicked on ****/
+        const currentEvent = document.createElement("div");
+        currentEvent.setAttribute("style", "background: white; color: black; width: 93%; text-align: left; padding: 10px; margin-bottom: 10px; border: none; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); display: block;");
 
-      if (data.location == undefined) currentEventLocation.innerHTML = "Location: NA";
-      else currentEventLocation.innerHTML = "Location: " + data.location;
+        // Selected Event Title (Centered and Bigger)
+        const currentEventTitle = document.createElement("h1");
+        currentEventTitle.setAttribute("style", "text-align: center; font-size: 24px; margin: 0; padding: 5px;");
 
-      // Check if a link exists. If yes, make it clickable and visible, opening in a new tab.
-      if (data.link && data.link.trim() !== "") {
-          currentEventLink.href = data.link;
-          currentEventLink.innerHTML = data.link;
-          currentEventLink.setAttribute("target", "_blank");
-          currentEventLink.style.display = "block";
-      } else {
-          currentEventLink.style.display = "none";
+        // Selected Event Time (Left aligned)
+        const currentEventTime = document.createElement("h2");
+        currentEventTime.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px;");
+
+        // Selected Event Location (Left aligned)
+        const currentEventLocation = document.createElement("h2");
+        currentEventLocation.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px;");
+
+        // New Selected Event Link (Left aligned, clickable)
+        const currentEventLink = document.createElement("a");
+        currentEventLink.setAttribute("style", "text-align: left; font-size: 16px; margin: 0; padding: 5px; display: block; color: blue; text-decoration: underline;");
+
+        // Selected Event Description (Left aligned)
+        // Updated style to force text wrapping and adjust height if needed.
+        const currentEventDescription = document.createElement("p");
+        currentEventDescription.setAttribute("style", "text-align: left; font-size: 14px; margin: 0; padding: 5px; word-wrap: break-word; overflow-wrap: break-word; white-space: normal;");
+
+        currentEvent.appendChild(currentEventTitle);
+        currentEvent.appendChild(currentEventTime);
+        currentEvent.appendChild(currentEventLocation);
+        currentEvent.appendChild(currentEventLink);  // Append link before description
+        currentEvent.appendChild(currentEventDescription);
+
+        if (event_i.title == undefined) currentEventTitle.innerHTML = "NA";
+        else currentEventTitle.innerHTML = event_i.title;
+
+        if (event_i.time == undefined) currentEventTime.innerHTML = "Time: NA";
+        else currentEventTime.innerHTML = "Time: " + event_i.time;
+
+        if (event_i.location == undefined) currentEventLocation.innerHTML = "Location: NA";
+        else currentEventLocation.innerHTML = "Location: " + event_i.location;
+
+        // Check if a link exists. If yes, make it clickable and visible, opening in a new tab.
+        if (event_i.link && event_i.link.trim() !== "") {
+            currentEventLink.href = event_i.link;
+            currentEventLink.innerHTML = event_i.link;
+            currentEventLink.setAttribute("target", "_blank");
+            currentEventLink.style.display = "block";
+        } else {
+            currentEventLink.style.display = "none";
+        }
+
+        if (event_i.description == undefined) currentEventDescription.innerHTML = "";
+        else currentEventDescription.innerHTML = "Description - " + event_i.description;
+
+        console.log(currentEvent);
+        currentEventDiv.appendChild(currentEvent);
       }
-
-      if (data.description == undefined) currentEventDescription.innerHTML = "";
-      else currentEventDescription.innerHTML = "Description - " + data.description;
   })
   .catch(error => console.error('Error finding event description:', error));
 }
