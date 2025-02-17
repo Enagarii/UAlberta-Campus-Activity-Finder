@@ -154,6 +154,8 @@ upcomingTab.addEventListener("click", function() {
 // ------------------------------
 // 6.5. Selected Event to look at
 // ------------------------------
+const currentEventDiv = document.createElement("div");
+
 const currentEvent = document.createElement("div");
 currentEvent.setAttribute(
   "style",
@@ -190,6 +192,7 @@ currentEvent.appendChild(currentEventTitle);
 currentEvent.appendChild(currentEventTime);
 currentEvent.appendChild(currentEventLocation);
 currentEvent.appendChild(currentEventDescription);
+
 
 topContainer.appendChild(currentEvent);
 

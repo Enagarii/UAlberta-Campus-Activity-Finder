@@ -13,8 +13,8 @@ let map = L.map('map', {
 }).setView([53.5245, -113.525], 16);
 L.control.zoom({ position: 'topright' }).addTo(map);
 
-let lat = null
-let lon = null
+let lat = null;
+let lon = null;
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 20,
@@ -25,6 +25,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 let marker_arr = [];
 let consolidatedMarkers = [];
 marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
+//marker.remove();
 
 // Make the marker
 map.on('click', function(e) {
@@ -36,7 +37,7 @@ map.on('click', function(e) {
 
 document.addEventListener("click", function (e) {
     // See if any popups are open
-    let json_event = { event: false };
+    let group_events = [];
     for (let i = 0; i < marker_arr.length; ++i) {
         // Change the Event on the left of the screen
         if (marker_arr[i].marker.isPopupOpen()) {
@@ -65,7 +66,7 @@ document.addEventListener("click", function (e) {
 // Create Event Button -> first check if all the data is filled out
 createEventButton.addEventListener("click", createEvent);
 function createEvent()
-{  
+{
     // Check the data in create event
     let valid_input = true;
 
@@ -111,11 +112,7 @@ function createEvent()
         }
     }
 
-    // Check if the lat and lon are null (default)
-    if (lat != null && lon != null)
-    {
-        sendData(new_event);
-    }
+    sendData(new_event);
     refreshPage();
     toggleRegisterBar();
     cleanEventRegister();
