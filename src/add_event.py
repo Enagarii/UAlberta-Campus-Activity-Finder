@@ -14,6 +14,7 @@ def dumpEventToJSON(event, json_file):
     
     
 def getPins():
+    # Read the decode the objects from the events.json file and return it
     file = open('static/JSON/events.json', 'r')
     pinList = json.load(file)
     file.close()
