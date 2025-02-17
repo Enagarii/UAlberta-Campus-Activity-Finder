@@ -135,6 +135,10 @@ toggleSwitch.addEventListener('change', function() {
     eventDescriptionInput.style.color = "white";
     eventLinkInput.style.color = "white";
 
+    lineOne.style.color = "black";
+    lineTwo.style.color = "black";
+    lineThree.style.color = "black";
+
     currentEventDiv.classList.remove("light");
     currentEventDiv.classList.add("dark");
     for (let i = 0; i < currentEventDiv.children.length; ++i) {
@@ -175,6 +179,10 @@ toggleSwitch.addEventListener('change', function() {
     eventEndDateTimeInput.style.color = "black";
     eventDescriptionInput.style.color = "black";
     eventLinkInput.style.color = "black";
+
+    lineOne.style.color = "rgb(220, 220, 220)";
+    lineTwo.style.color = "rgb(220, 220, 220)";
+    lineThree.style.color = "rgb(220, 220, 220)";
     
     currentEventDiv.classList.add("light");
     currentEventDiv.classList.remove("dark");
