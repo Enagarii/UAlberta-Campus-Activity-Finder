@@ -13,6 +13,11 @@ body {
 
 }
 
+.markerClass
+{
+    filter: hue-rotate(120deg);
+}
+
 .dark-mode {
     background-color: #323232;
     color: rgb(220, 220, 220);

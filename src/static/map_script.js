@@ -126,13 +126,14 @@ toggleSwitch.addEventListener('change', function() {
     eventStartDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventEndDateTimeInput.style.backgroundColor = "rgb(85, 85, 85)";
     eventDescriptionInput.style.backgroundColor = "rgb(85, 85, 85)";
+    eventLinkInput.style.backgroundColor = "rgb(85, 85, 85)";
 
     eventTitleInput.style.color = "white";
     eventLocationInput.style.color = "white";
     eventStartDateTimeInput.style.color = "white";
     eventEndDateTimeInput.style.color = "white";
     eventDescriptionInput.style.color = "white";
-
+    eventLinkInput.style.color = "white";
     
 
   } else {
@@ -160,12 +161,14 @@ toggleSwitch.addEventListener('change', function() {
     eventStartDateTimeInput.style.backgroundColor = "white";
     eventEndDateTimeInput.style.backgroundColor = "white";
     eventDescriptionInput.style.backgroundColor = "white";
+    eventLinkInput.style.backgroundColor = "white";
 
     eventTitleInput.style.color = "black";
     eventLocationInput.style.color = "black";
     eventStartDateTimeInput.style.color = "black";
     eventEndDateTimeInput.style.color = "black";
     eventDescriptionInput.style.color = "black";
+    eventLinkInput.style.color = "black";
   }
 });
 
@@ -173,15 +176,26 @@ toggleSwitch.addEventListener('change', function() {
  * 5. Map Click & Marker Handling
  ***********************************************/
 let marker_arr = [];
-var marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
 let consolidatedMarkers = [];
 marker = L.marker([53.52173731864776, -113.53026918095853]).addTo(map);
 //marker.remove();
 
+var markerOpacity = 0;
+
+marker = L.marker([0, 0]).addTo(map);
+marker._icon.classList.add("markerClass")
+marker.setOpacity(markerOpacity);
+
+
+
 map.on('click', function(e) {
-    lat = e.latlng.lat;
-    lon = e.latlng.lng;
-    marker.setLatLng([lat, lon]);
+    // make a marker
+    if (markerOpacity == 1)
+    {
+        lat = e.latlng.lat;
+        lon = e.latlng.lng;
+        marker.setLatLng([e.latlng.lat, e.latlng.lng]);
+    }
 });
 
 document.addEventListener("click", function (e) {
